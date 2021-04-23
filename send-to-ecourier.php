@@ -1,4 +1,4 @@
-<?php
+<?php // phpcs:ignore
 /**
  * Plugin Name:     Send To eCourier
  * Plugin URI:      https://simongomes.dev
@@ -12,6 +12,32 @@
  * License URI:     https://www.gnu.org/licenses/gpl-3.0.html
  *
  * @package         SendToEcourier
+ */
+
+/**
+ * Copyright (c) 2021 Simon Gomes (email: busy.s.simon@gmail.com). All rights reserved.
+ *
+ * Released under the GPL license
+ * https://www.gnu.org/licenses/gpl-3.0.html
+ *
+ * This is an add-on for WordPress
+ * http://wordpress.org/
+ *
+ * **********************************************************************
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * **********************************************************************
  */
 
 // Block direct access to the file.
@@ -47,6 +73,8 @@ if ( ! class_exists( 'Send_To_Ecourier' ) ) {
 			$this->define_constants();
 
 			register_activation_hook( __FILE__, array( $this, 'activate' ) );
+
+			add_action( 'plugins_loaded', array( $this, 'init_plugin' ) );
 		}
 
 		/**
@@ -74,9 +102,20 @@ if ( ! class_exists( 'Send_To_Ecourier' ) ) {
 			define( 'STE_FILE', __FILE__ );
 			define( 'STE_PATH', __DIR__ );
 			define( 'STE_URL', plugins_url( '', STE_FILE ) );
-			define( 'STE_ASSETS', STE_URL . '/assets' );
+			define( 'STE_ASSETS_URL', STE_URL . '/assets' );
 			define( 'STE_API_BASE_URL_STAGING', 'https://staging.ecourier.com.bd/api' );
 			define( 'STE_API_BASE_URL_LIVE', 'https://backoffice.ecourier.com.bd/api' );
+		}
+
+		/**
+		 * Load plugin classes and initialize assets.
+		 *
+		 * @return void
+		 */
+		public function init_plugin() {
+			if ( is_admin() ) {
+				new SendToEcourier\Admin\Menu();
+			}
 		}
 
 		/**
