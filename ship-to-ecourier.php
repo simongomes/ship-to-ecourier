@@ -1,17 +1,17 @@
 <?php // phpcs:ignore
 /**
- * Plugin Name:     Send To eCourier
+ * Plugin Name:     Ship To eCourier
  * Plugin URI:      https://simongomes.dev
- * Description:     Send To eCourier gives you ability to send your parcel request to eCourier directly from your WooCommerce dashboard, it enables booking automation from your WordPress website.
+ * Description:     Ship To eCourier gives you ability to send your parcel request to eCourier directly from your WooCommerce dashboard, it enables booking automation from your WordPress website.
  * Author:          Simon Gomes
  * Author URI:      https://simongomes.dev
- * Text Domain:     send-to-ecourier
+ * Text Domain:     ship-to-ecourier
  * Domain Path:     /languages
  * Version:         1.0.1
  * License:         GPLv3
  * License URI:     https://www.gnu.org/licenses/gpl-3.0.html
  *
- * @package         SendToEcourier
+ * @package         ShipToEcourier
  */
 
 /**
@@ -114,7 +114,7 @@ if ( ! class_exists( 'Send_To_Ecourier' ) ) {
 		 */
 		public function init_plugin() {
 			if ( is_admin() ) {
-				new SendToEcourier\Admin\Menu();
+				new ShipToEcourier\Admin();
 			}
 		}
 
@@ -124,7 +124,7 @@ if ( ! class_exists( 'Send_To_Ecourier' ) ) {
 		 * @return void
 		 */
 		public function activate() {
-			$installer = new SendToEcourier\Installer();
+			$installer = new ShipToEcourier\Installer();
 			$installer->run();
 		}
 

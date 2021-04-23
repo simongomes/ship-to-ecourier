@@ -1,6 +1,6 @@
 <?php // phpcs:ignore
 
-namespace SendToEcourier;
+namespace ShipToEcourier;
 
 if ( ! class_exists( 'Installer' ) ) {
 	/**
@@ -8,7 +8,7 @@ if ( ! class_exists( 'Installer' ) ) {
 	 *
 	 * Sets up necessary configuration for the plugin. Takes care of database related configurations as well.
 	 *
-	 * @package SendToEcourier
+	 * @package ShipToEcourier
 	 */
 	class Installer {
 

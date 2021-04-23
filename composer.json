@@ -1,5 +1,5 @@
 {
-    "name": "simongomes/send-to-ecourier",
+    "name": "simongomes/ship-to-ecourier",
     "description": "eCourier Parcel booking automation plugin for WooCommerce",
     "type": "wordpress-plugin",
     "license": "GPLv3",
@@ -12,7 +12,8 @@
     "minimum-stability": "dev",
     "autoload": {
       "psr-4": {
-        "SendToEcourier\\": "includes/"
-      }
+        "ShipToEcourier\\": "includes/"
+      },
+      "files": [ "includes/functions.php" ]
     }
 }
