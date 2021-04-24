@@ -1,10 +1,10 @@
 //! phpcs:ignoreFile
-//! frontend.js - for eCourier Parcel Tracker WordPress Plugin.
-//! version 	: 1.0.0
+//! frontend.js - for Ship To Ecourier WordPress Plugin.
+//! version 	: 1.0.1
 //! author 		: Simon Gomes
 //! author uri	: https://simongomes.dev
-//! license 	: GPLv2 or later
-//! license uri : https://www.gnu.org/licenses/gpl-2.0.html
+//! license 	: GPLv3
+//! license uri : https://www.gnu.org/licenses/gpl-3.0.html
 
 (function ($) {
 	let errorMessage = "";

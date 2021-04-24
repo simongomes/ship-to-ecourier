@@ -1,6 +1,6 @@
 <?php // phpcs:ignore
 /**
- * This file handles, loads and organizes the admin-end related classes dnd functionalities.
+ * This file handles, loads and organizes the admin-end related classes and functionalities.
  *
  * @package ShipToEcourier
  */

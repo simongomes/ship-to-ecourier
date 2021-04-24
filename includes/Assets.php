@@ -16,16 +16,25 @@ if ( ! class_exists( 'Assets' ) ) {
 	class Assets {
 
 		/**
+		 * Assets constructor.
+		 *
+		 * @return void
+		 */
+		public function __construct() {
+			add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_assets' ) );
+		}
+
+		/**
 		 * Get an array of necessary css styles for the plugin.
 		 *
 		 * @return array[]
 		 */
 		public function get_styles() {
 			return array(
-				'ste-styles' => array(
+				'ste-frontend-styles' => array(
 					'src'     => STE_ASSETS_URL . '/css/frontend.css',
 					'deps'    => array(),
-					'version' => SET_VERSION,
+					'version' => STE_VERSION,
 				),
 			);
 		}
@@ -40,19 +49,19 @@ if ( ! class_exists( 'Assets' ) ) {
 				'ste-lodash'          => array(
 					'src'       => STE_ASSETS_URL . '/js/lodash.js',
 					'deps'      => array(),
-					'version'   => SET_VERSION,
+					'version'   => '4.17.15',
 					'in_footer' => true,
 				),
 				'ste-moment'          => array(
 					'src'       => STE_ASSETS_URL . '/js/moment.js',
 					'deps'      => array(),
-					'version'   => SET_VERSION,
+					'version'   => '2.29.1',
 					'in_footer' => true,
 				),
 				'ste-frontend-script' => array(
 					'src'       => STE_ASSETS_URL . '/js/frontend.js',
 					'deps'      => array( 'jquery', 'ste-lodash', 'ste-moment' ),
-					'version'   => SET_VERSION,
+					'version'   => STE_VERSION,
 					'in_footer' => true,
 				),
 			);
@@ -77,7 +86,7 @@ if ( ! class_exists( 'Assets' ) ) {
 			}
 
 			wp_localize_script(
-				'ept-script',
+				'ste-frontend-script',
 				'STE',
 				array(
 					'ajaxurl' => admin_url( 'admin-ajax.php' ),

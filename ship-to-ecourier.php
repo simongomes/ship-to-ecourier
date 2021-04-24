@@ -119,6 +119,9 @@ if ( ! class_exists( 'Ship_To_Ecourier' ) ) {
 			if ( is_admin() ) {
 				// Load admin classes.
 				new ShipToEcourier\Admin();
+			} else {
+				// Load Frontend classes.
+				new ShipToEcourier\Frontend();
 			}
 		}
 

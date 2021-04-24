@@ -54,6 +54,7 @@
 
 #ept-wrap .ept-tracker-input-container form {
 	position: relative;
+    margin: 0;
 }
 
 #ept-wrap .ept-tracker-input-container form input {
