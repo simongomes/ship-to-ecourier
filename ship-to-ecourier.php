@@ -49,13 +49,13 @@ if ( file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
 	require_once __DIR__ . '/vendor/autoload.php';
 }
 
-if ( ! class_exists( 'Send_To_Ecourier' ) ) {
+if ( ! class_exists( 'Ship_To_Ecourier' ) ) {
 	/**
 	 * Register the main plugin class.
 	 *
-	 * Class Send_To_Ecourier
+	 * Class Ship_To_Ecourier
 	 */
-	final class Send_To_Ecourier {
+	final class Ship_To_Ecourier {
 
 		/**
 		 * Plugin version
@@ -65,7 +65,7 @@ if ( ! class_exists( 'Send_To_Ecourier' ) ) {
 		const VERSION = '1.0.1';
 
 		/**
-		 * Send_To_Ecourier constructor.
+		 * Ship_To_Ecourier constructor.
 		 *
 		 * @return void
 		 */
@@ -80,7 +80,7 @@ if ( ! class_exists( 'Send_To_Ecourier' ) ) {
 		/**
 		 * Initialize a singleton instance.
 		 *
-		 * @return \Send_To_Ecourier
+		 * @return \Ship_To_Ecourier
 		 */
 		public static function init() {
 			$instance = false;
@@ -113,7 +113,11 @@ if ( ! class_exists( 'Send_To_Ecourier' ) ) {
 		 * @return void
 		 */
 		public function init_plugin() {
+			// Call Assets class to load necessary assets for plugin ( JavaScript and CSS ).
+			new ShipToEcourier\Assets();
+
 			if ( is_admin() ) {
+				// Load admin classes.
 				new ShipToEcourier\Admin();
 			}
 		}
@@ -134,11 +138,11 @@ if ( ! class_exists( 'Send_To_Ecourier' ) ) {
 /**
  * Initialize the main plugin.
  *
- * @return \Send_To_Ecourier|bool
+ * @return \Ship_To_Ecourier|bool
  */
-function send_to_ecourier() {
-	return Send_To_Ecourier::init();
+function ship_to_ecourier() {
+	return Ship_To_Ecourier::init();
 }
 
 // Kick-off the plugin.
-send_to_ecourier();
+ship_to_ecourier();
