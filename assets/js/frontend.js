@@ -44,7 +44,8 @@
 		}
 
 		let data = $(this).serialize();
-		$.post(STE.ajaxurl, data, function (response) {1``
+		data += `&nonce=${STE.nonce}`;
+		$.post(STE.ajaxurl, data, function (response) {
 			if (response.success) {
 				const result = JSON.parse(response.data.message);
 

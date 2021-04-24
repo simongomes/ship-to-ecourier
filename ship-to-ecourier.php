@@ -116,6 +116,11 @@ if ( ! class_exists( 'Ship_To_Ecourier' ) ) {
 			// Call Assets class to load necessary assets for plugin ( JavaScript and CSS ).
 			new ShipToEcourier\Assets();
 
+			// Load Ajax request handler.
+			if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
+				new ShipToEcourier\Ajax();
+			}
+
 			if ( is_admin() ) {
 				// Load admin classes.
 				new ShipToEcourier\Admin();

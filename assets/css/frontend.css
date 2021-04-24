@@ -135,7 +135,7 @@
 
 #ept-wrap #track-not-found img {
 	max-width: 200px;
-	margin-bottom: 30px;
+	margin: 0 auto 30px;
 }
 
 #ept-wrap #package-information {

@@ -14,8 +14,8 @@
 		<form method="post" id="track-form" action="#">
 			<input type="text" name="tracking_code" placeholder="<?php esc_attr_e( 'Type your tracking number', 'ship-to-ecourier' ); ?>" class="tracking-code form-control">
 
-			<?php wp_nonce_field( 'ept-search-form' ); ?>
-			<input type="hidden" name="action" value="ept_tracking_form">
+<!--			--><?php //wp_nonce_field( 'ste-parcel-tracker-search-form' ); ?>
+			<input type="hidden" name="action" value="ste_parcel_tracking_form">
 
 			<button type="submit" class="common-btn">
 				<i class="icon-search"></i>
@@ -27,7 +27,7 @@
 		<p class="error-message"><?php esc_html_e( 'Tracking number starts with ECR or BL and minimum 11 characters', 'ship-to-ecourier' ); ?></p>
 	</div>
 	<div id="track-not-found">
-		<img src="<?php echo esc_url( EPT_ASSETS . '/images/not-found.svg' ); ?>" alt="">
+		<img src="<?php echo esc_url( STE_ASSETS_URL . '/images/not-found.svg' ); ?>" alt="">
 		<h3><?php esc_html_e( 'No Result Found', 'ship-to-ecourier' ); ?></h3>
 		<h4><?php esc_html_e( 'We can’t find any results based on your search.', 'ship-to-ecourier' ); ?></h4>
 	</div>

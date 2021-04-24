@@ -90,6 +90,7 @@ if ( ! class_exists( 'Assets' ) ) {
 				'STE',
 				array(
 					'ajaxurl' => admin_url( 'admin-ajax.php' ),
+					'nonce'   => wp_create_nonce( 'ste-frontend-nonce' ),
 					'error'   => __( 'Something went wrong!', 'ship-to-ecourier' ),
 				)
 			);
