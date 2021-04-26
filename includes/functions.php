@@ -38,3 +38,34 @@ function ste_get_settings() {
 
 	return $settings;
 }
+
+/**
+ * Get eCourier packages for the connected account.
+ *
+ * @return array
+ */
+function ste_get_ecourier_packages() {
+
+	// Get eCourier API configs.
+	$settings = ste_get_settings();
+
+	// Get eCourier API URL (Staging/Live).
+	$ecourier_api_url = 'live' === $settings['api_environment'] ? STE_API_BASE_URL_LIVE . '/packages' : STE_API_BASE_URL_STAGING . '/packages';
+
+	// Send request to eCourier to fetch the active packages.
+	$response = wp_remote_post(
+		$ecourier_api_url,
+		array(
+			'method'  => 'POST',
+			'headers' => array(
+				'USER-ID'    => $settings['user_id'],
+				'API-KEY'    => $settings['api_key'],
+				'API-SECRET' => $settings['api_secret'],
+			),
+		)
+	);
+
+	$packages = json_decode( $response['body'] );
+
+	return $packages;
+}

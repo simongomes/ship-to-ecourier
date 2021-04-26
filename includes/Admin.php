@@ -27,6 +27,11 @@ if ( ! class_exists( 'Admin' ) ) {
 			$this->dispatch_actions( $settings );
 
 			new Admin\Menu( $settings );
+
+			// Check if the WooCommerse plugin is active and fire the STE_Metabox class to add the custom metabox.
+			if ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ), true ) ) {
+				new Admin\STE_Metabox();
+			}
 		}
 
 		/**
