@@ -21,7 +21,13 @@ if ( ! class_exists( 'Assets' ) ) {
 		 * @return void
 		 */
 		public function __construct() {
-			add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_assets' ) );
+			if ( is_admin() ) {
+				add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_assets' ) );
+			} else {
+				add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_assets' ) );
+			}
+
+
 		}
 
 		/**
@@ -35,6 +41,11 @@ if ( ! class_exists( 'Assets' ) ) {
 					'src'     => STE_ASSETS_URL . '/css/frontend.css',
 					'deps'    => array(),
 					'version' => STE_VERSION,
+				),
+				'ste-admin-styles'    => array(
+					'src'     => STE_ASSETS_URL . '/css/admin.css',
+					'deps'    => array(),
+					'version' => filemtime( STE_PATH . '/assets/css/admin.css' ),
 				),
 			);
 		}
@@ -64,6 +75,12 @@ if ( ! class_exists( 'Assets' ) ) {
 					'version'   => STE_VERSION,
 					'in_footer' => true,
 				),
+				'ste-admin-script'    => array(
+					'src'       => STE_ASSETS_URL . '/js/admin.js',
+					'deps'      => array( 'jquery' ),
+					'version'   => filemtime( STE_PATH . '/assets/js/admin.js' ),
+					'in_footer' => true,
+				),
 			);
 		}
 
@@ -91,6 +108,16 @@ if ( ! class_exists( 'Assets' ) ) {
 				array(
 					'ajaxurl' => admin_url( 'admin-ajax.php' ),
 					'nonce'   => wp_create_nonce( 'ste-frontend-nonce' ),
+					'error'   => __( 'Something went wrong!', 'ship-to-ecourier' ),
+				)
+			);
+
+			wp_localize_script(
+				'ste-admin-script',
+				'STE_ADMIN',
+				array(
+					'ajaxurl' => admin_url( 'admin-ajax.php' ),
+					'nonce'   => wp_create_nonce( 'ste-admin-nonce' ),
 					'error'   => __( 'Something went wrong!', 'ship-to-ecourier' ),
 				)
 			);

@@ -1,0 +1,32 @@
+/**
+ * Name: Ship To eCourier
+ * Description: Styling for the admin related view for Ship To eCourier WordPress plugin.
+ * Author: Simon Gomes
+ * Author URI: https://simongomes.dev
+ * Version: 1.0.1
+ * License: GPLv3
+ * License URI: https://www.gnu.org/licenses/gpl-3.0.html
+ */
+#ste-metabox-wrap {
+    overflow: hidden;
+}
+#ste-metabox-wrap label {
+    display: block;
+    margin-bottom: 5px;
+}
+#ste-metabox-wrap input,
+#ste-metabox-wrap textarea,
+#ste-metabox-wrap select {
+    width: 99.5%;
+}
+#ste-metabox-wrap input[type='submit'] {
+    width: auto;
+    float: right;
+}
+#ste-metabox-wrap ul {
+    margin: 0;
+}
+#ste-metabox-wrap .clear {
+    overflow: hidden;
+    clear: both;
+}

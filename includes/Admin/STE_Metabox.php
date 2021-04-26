@@ -22,7 +22,7 @@ if ( ! class_exists( 'STE_Metabox' ) ) {
 		 *
 		 * @var array
 		 */
-		private $shipping_info = [];
+		private $shipping_info = array();
 
 		/**
 		 * STE_Metabox constructor, fires action to add the metabox.
@@ -30,7 +30,7 @@ if ( ! class_exists( 'STE_Metabox' ) ) {
 		 * @return void;
 		 */
 		public function __construct() {
-			add_action( 'add_meta_boxes', [ $this, 'ste_register_metabox' ] );
+			add_action( 'add_meta_boxes', array( $this, 'ste_register_metabox' ) );
 		}
 
 		/**
@@ -39,7 +39,7 @@ if ( ! class_exists( 'STE_Metabox' ) ) {
 		 * @return void;
 		 */
 		public function ste_register_metabox() {
-			add_meta_box( 'ste-booking-metabox', __( 'Ship To eCourier', 'send-to-ecourier' ), array( $this, 'ste_metabox_handler' ), 'shop_order', 'side' );
+			add_meta_box( 'ste-booking-metabox', __( 'Ship To eCourier', 'send-to-ecourier' ), array( $this, 'ste_metabox_view_handler' ), 'shop_order', 'side' );
 		}
 
 		/**
@@ -47,11 +47,16 @@ if ( ! class_exists( 'STE_Metabox' ) ) {
 		 *
 		 * @return void
 		 */
-		public function ste_metabox_handler() {
+		public function ste_metabox_view_handler() {
 			global $theorder, $post;
+
 			if ( ! is_object( $theorder ) ) {
 				$theorder = wc_get_order( $post->ID );
 			}
+
+			// Load admin assets.
+			wp_enqueue_style( 'ste-admin-styles' );
+			wp_enqueue_script( 'ste-admin-script' );
 
 			// Set all necessary Shipping Information.
 			$this->ste_set_shipping_info( $theorder );
