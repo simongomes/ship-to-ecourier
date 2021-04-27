@@ -2,7 +2,7 @@
 /**
  * This file contains class that handles the custom Ship To eCourier Metabox.
  *
- * @package ShipToEcourier
+ * @package ShipToEcourier\Admin
  */
 
 namespace ShipToEcourier\Admin;

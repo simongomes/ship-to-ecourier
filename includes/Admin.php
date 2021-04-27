@@ -28,8 +28,10 @@ if ( ! class_exists( 'Admin' ) ) {
 
 			new Admin\Menu( $settings );
 
-			// Check if the WooCommerse plugin is active and fire the STE_Metabox class to add the custom metabox.
+			// Check if the WooCommerce plugin is active then fire the STE_Metabox class to add the custom metabox.
+			// Also call the STE_Order_Status_Shipped class to add `Shipped` status to WC order statuses.
 			if ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ), true ) ) {
+				new Admin\STE_Order_Status_Shipped();
 				new Admin\STE_Metabox();
 			}
 		}
