@@ -60,28 +60,15 @@ if ( ! class_exists( 'Ajax' ) ) {
 			check_ajax_referer( 'ste-frontend-nonce', 'nonce' );
 
 			if ( isset( $_POST['tracking_code'] ) ) {
+
 				$tracking_code = sanitize_text_field( wp_unslash( $_POST['tracking_code'] ) );
 
 				$ecourier_api_url = $this->ecourier_base_url . '/track';
 
-				$response = wp_remote_post(
-					$ecourier_api_url,
-					array(
-						'method'  => 'POST',
-						'headers' => array(
-							'USER-ID'      => $this->settings['user_id'],
-							'API-KEY'      => $this->settings['api_key'],
-							'API-SECRET'   => $this->settings['api_secret'],
-							'Content-Type' => 'application/json',
-						),
-						'body'    => wp_json_encode(
-							array(
-								'ecr' => $tracking_code,
-							)
-						),
-					)
-				);
+				// Make request to eCourier API.
+				$response = $this->ste_make_request( $ecourier_api_url, array( 'ecr' => $tracking_code ) );
 
+				// Send response to front-end.
 				wp_send_json_success(
 					array(
 						'message' => $response['body'],
@@ -103,6 +90,7 @@ if ( ! class_exists( 'Ajax' ) ) {
 		 * @return void
 		 */
 		public function ste_handle_booking_metabox_form_submission() {
+
 			if ( ! isset( $_POST['submit_ste_ecourier_parcel'] ) || ! isset( $_POST['_nonce'] ) ) {
 				die( 'Request is not valid!' );
 			}
@@ -153,8 +141,36 @@ if ( ! class_exists( 'Ajax' ) ) {
 			$ecourier_api_url = $this->ecourier_base_url . '/order-place';
 
 			// Send parcel booking request to eCourier.
-			$response = wp_remote_post(
-				$ecourier_api_url,
+			$response = $this->ste_make_request( $ecourier_api_url, $parcel_data );
+
+			$result = json_decode( $response['body'], true );
+
+			if ( $result['success'] ) {
+				// Get the order to update the order status.
+				$order = new \WC_Order( $parcel_data['product_id'] );
+				$order->update_status( 'shipped' );
+			}
+
+			// Send response back to admin panel.
+			wp_send_json_success(
+				array(
+					'message' => $response['body'],
+				)
+			);
+		}
+
+		/**
+		 * Make request to eCourier API.
+		 *
+		 * @param string $url API end-point.
+		 * @param array  $params API request parameters.
+		 *
+		 * @return array|\WP_Error
+		 */
+		public function ste_make_request( string $url, $params = array() ) {
+
+			return wp_remote_post(
+				$url,
 				array(
 					'method'  => 'POST',
 					'headers' => array(
@@ -163,16 +179,10 @@ if ( ! class_exists( 'Ajax' ) ) {
 						'API-SECRET'   => $this->settings['api_secret'],
 						'Content-Type' => 'application/json',
 					),
-					'body'    => wp_json_encode( $parcel_data ),
+					'body'    => wp_json_encode( $params ),
 				)
 			);
 
-			// Send response back to admin panel.
-			wp_send_json_success(
-				array(
-					'message' => $response['body'],
-				)
-			);
 		}
 	}
 }

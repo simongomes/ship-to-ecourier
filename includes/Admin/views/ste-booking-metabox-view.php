@@ -8,7 +8,6 @@
 ?>
 
 <div id="ste-metabox-wrap">
-
 	<div id="ste-booking-metabox-form">
 		<ul class="ste_metabox submitbox">
 			<li class="wide">
@@ -75,6 +74,6 @@
 	</div>
 	<div id="ste-booking-metabox-message">
 		<h3 class="title"></h3>
-		<h4>Tracking ID <span class="tracking_id"></span></h4>
+		<h4><?php esc_html_e( 'Tracking ID: ', 'ship-to-ecourier' ); ?> <span class="tracking_id"></span></h4>
 	</div>
 </div>

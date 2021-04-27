@@ -56,10 +56,11 @@
                         $( ".tracking_id", bookingMetaBoxMessage ).text( ecourier_esponse.ID );
                         bookingForm.hide();
                         bookingMetaBoxMessage.show();
+                        window.location.reload();
                     }
                 }
             })
         }
 
     });
-})(jQuery);
+})(jQuery, window);
