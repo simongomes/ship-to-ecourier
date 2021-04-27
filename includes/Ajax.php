@@ -17,11 +17,32 @@ if ( ! class_exists( 'Ajax' ) ) {
 	class Ajax {
 
 		/**
+		 * Contains eCourier API base url.
+		 *
+		 * @var string
+		 */
+		public $ecourier_base_url = '';
+
+		/**
+		 * Contains eCourier API credentials.
+		 *
+		 * @var array
+		 */
+		public $settings = array();
+
+		/**
 		 * Ajax constructor, registers the actions.
 		 *
 		 * @return void
 		 */
 		public function __construct() {
+
+			// Get eCourier API credentials.
+			$this->settings = ste_get_settings();
+
+			// Set eCourier base url.
+			$this->ecourier_base_url = 'live' === $this->settings['api_environment'] ? STE_API_BASE_URL_LIVE : STE_API_BASE_URL_STAGING;
+
 			add_action( 'wp_ajax_ste_parcel_tracking_form', array( $this, 'ste_handle_parcel_tracker_form_submission' ) );
 			add_action( 'wp_ajax_nopriv_ste_parcel_tracking_form', array( $this, 'ste_handle_parcel_tracker_form_submission' ) );
 			add_action( 'wp_ajax_ste_booking_metabox_form', array( $this, 'ste_handle_booking_metabox_form_submission' ) );
@@ -38,24 +59,25 @@ if ( ! class_exists( 'Ajax' ) ) {
 			// Block if valid nonce field is not available and valid.
 			check_ajax_referer( 'ste-frontend-nonce', 'nonce' );
 
-			$settings = ste_get_settings();
-
 			if ( isset( $_POST['tracking_code'] ) ) {
 				$tracking_code = sanitize_text_field( wp_unslash( $_POST['tracking_code'] ) );
 
-				$ecourier_api_url = 'live' === $settings['api_environment'] ? STE_API_BASE_URL_LIVE . '/track' : STE_API_BASE_URL_STAGING . '/track';
+				$ecourier_api_url = $this->ecourier_base_url . '/track';
 
 				$response = wp_remote_post(
 					$ecourier_api_url,
 					array(
 						'method'  => 'POST',
 						'headers' => array(
-							'USER-ID'    => $settings['user_id'],
-							'API-KEY'    => $settings['api_key'],
-							'API-SECRET' => $settings['api_secret'],
+							'USER-ID'      => $this->settings['user_id'],
+							'API-KEY'      => $this->settings['api_key'],
+							'API-SECRET'   => $this->settings['api_secret'],
+							'Content-Type' => 'application/json',
 						),
-						'body'    => array(
-							'ecr' => $tracking_code,
+						'body'    => wp_json_encode(
+							array(
+								'ecr' => $tracking_code,
+							)
 						),
 					)
 				);
@@ -100,6 +122,7 @@ if ( ! class_exists( 'Ajax' ) ) {
 				! isset( $_POST['package_code'] ) || '' === $_POST['package_code'] ||
 				! isset( $_POST['package_code'] ) || '' === $_POST['package_code'] ||
 				! isset( $_POST['product_id'] ) || '' === $_POST['product_id'] ||
+				! isset( $_POST['product_price'] ) || '' === $_POST['product_price'] ||
 				! isset( $_POST['number_of_item'] ) || '' === $_POST['number_of_item'] ||
 				! isset( $_POST['comments'] ) || '' === $_POST['comments']
 			) {
@@ -112,11 +135,43 @@ if ( ! class_exists( 'Ajax' ) ) {
 
 			// Generate parcel booking data to send to eCourier.
 			$parcel_data = array(
-				'recipient_name' => isset( $_POST['recipient_name'] ) ? sanitize_text_field( wp_unslash( $_POST['recipient_name'] ) ) : '',
+				'recipient_name'    => sanitize_text_field( wp_unslash( $_POST['recipient_name'] ) ),
+				'recipient_mobile'  => sanitize_text_field( wp_unslash( $_POST['recipient_mobile'] ) ),
+				'recipient_city'    => sanitize_text_field( wp_unslash( $_POST['recipient_city'] ) ),
+				'recipient_area'    => sanitize_text_field( wp_unslash( $_POST['recipient_area'] ) ),
+				'recipient_thana'   => sanitize_text_field( wp_unslash( $_POST['recipient_thana'] ) ),
+				'recipient_zip'     => sanitize_text_field( wp_unslash( $_POST['recipient_zip'] ) ),
+				'recipient_address' => sanitize_text_field( wp_unslash( $_POST['recipient_address'] ) ),
+				'payment_method'    => sanitize_text_field( wp_unslash( $_POST['payment_method'] ) ),
+				'package_code'      => sanitize_text_field( wp_unslash( $_POST['package_code'] ) ),
+				'product_id'        => sanitize_text_field( wp_unslash( $_POST['product_id'] ) ),
+				'product_price'     => sanitize_text_field( wp_unslash( $_POST['product_price'] ) ),
+				'number_of_item'    => sanitize_text_field( wp_unslash( $_POST['number_of_item'] ) ),
+				'comments'          => sanitize_text_field( wp_unslash( $_POST['comments'] ) ),
 			);
 
+			$ecourier_api_url = $this->ecourier_base_url . '/order-place';
+
+			// Send parcel booking request to eCourier.
+			$response = wp_remote_post(
+				$ecourier_api_url,
+				array(
+					'method'  => 'POST',
+					'headers' => array(
+						'USER-ID'      => $this->settings['user_id'],
+						'API-KEY'      => $this->settings['api_key'],
+						'API-SECRET'   => $this->settings['api_secret'],
+						'Content-Type' => 'application/json',
+					),
+					'body'    => wp_json_encode( $parcel_data ),
+				)
+			);
+
+			// Send response back to admin panel.
 			wp_send_json_success(
-				$_POST
+				array(
+					'message' => $response['body'],
+				)
 			);
 		}
 	}

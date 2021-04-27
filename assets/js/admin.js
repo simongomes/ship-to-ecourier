@@ -7,25 +7,28 @@
 //! license uri : https://www.gnu.org/licenses/gpl-3.0.html
 
 ;(function ($) {
-    let bookingForm = $("#ste-metabox-wrap");
+    let bookingFormWrap = $( "#ste-metabox-wrap" );
+    let errorMessage = $( '.error-message' );
+    let bookingForm = $( '#ste-booking-metabox-form' );
+    let bookingMetaBoxMessage = $( '#ste-booking-metabox-message' );
     $("#submit_ste_ecourier_parcel").on("click", function (e) {
         e.preventDefault();
         let _isValid = true;
         let parcelData = {
-            recipient_name: $( "#recipient_name", bookingForm ).val(),
-            recipient_mobile: $( "#recipient_mobile", bookingForm ).val(),
-            recipient_city: $( "#recipient_city", bookingForm ).val(),
-            recipient_area: $( "#recipient_area", bookingForm ).val(),
-            recipient_thana: $( "#recipient_thana", bookingForm ).val(),
-            recipient_zip: $( "#recipient_zip", bookingForm ).val(),
-            recipient_address: $( "#recipient_address", bookingForm ).val(),
-            payment_method: $( "#payment_method", bookingForm ).val(),
-            package_code: $( "#package_code", bookingForm ).val(),
-            product_id: $( "#product_id", bookingForm ).val(),
-            product_price: $( "#product_price", bookingForm ).val(),
-            number_of_item: $( "#number_of_item", bookingForm ).val(),
-            comments: $( "#comments", bookingForm ).val(),
-            submit_ste_ecourier_parcel: $( "#submit_ste_ecourier_parcel", bookingForm ).val(),
+            recipient_name: $( "#recipient_name", bookingFormWrap ).val(),
+            recipient_mobile: $( "#recipient_mobile", bookingFormWrap ).val().replace( "+88", "" ),
+            recipient_city: $( "#recipient_city", bookingFormWrap ).val(),
+            recipient_area: $( "#recipient_area", bookingFormWrap ).val(),
+            recipient_thana: $( "#recipient_thana", bookingFormWrap ).val(),
+            recipient_zip: $( "#recipient_zip", bookingFormWrap ).val(),
+            recipient_address: $( "#recipient_address", bookingFormWrap ).val(),
+            payment_method: $( "#payment_method", bookingFormWrap ).val(),
+            package_code: $( "#package_code", bookingFormWrap ).val(),
+            product_id: $( "#product_id", bookingFormWrap ).val(),
+            product_price: $( "#product_price", bookingFormWrap ).val(),
+            number_of_item: $( "#number_of_item", bookingFormWrap ).val(),
+            comments: $( "#comments", bookingFormWrap ).val(),
+            submit_ste_ecourier_parcel: $( "#submit_ste_ecourier_parcel", bookingFormWrap ).val(),
             action: 'ste_booking_metabox_form',
             _nonce: STE_ADMIN.nonce,
         };
@@ -36,14 +39,24 @@
             }
         });
         if ( ! _isValid ) {
-            $( '.error-message' ).text( STE_ADMIN.error.required );
+            errorMessage.text( STE_ADMIN.error.required );
         } else {
-            $( '.error-message' ).text( '' );
+            errorMessage.text( '' );
             $.post(STE_ADMIN.ajaxurl, parcelData, function ( response ) {
                 if ( ! response.success ) {
-                    $( '.error-message' ).text( response.data.message );
+                    errorMessage.text( response.data.message );
                 } else {
-                    $( '.error-message' ).text( '' );
+                    errorMessage.text( '' );
+                    const ecourier_esponse = JSON.parse( response.data.message );
+                    if ( ! ecourier_esponse.success  ) {
+                        errorMessage.text( ecourier_esponse.errors[0] );
+                    } else {
+                        errorMessage.text( '' );
+                        $( ".title", bookingMetaBoxMessage ).text( ecourier_esponse.message );
+                        $( ".tracking_id", bookingMetaBoxMessage ).text( ecourier_esponse.ID );
+                        bookingForm.hide();
+                        bookingMetaBoxMessage.show();
+                    }
                 }
             })
         }

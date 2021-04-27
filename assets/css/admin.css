@@ -31,3 +31,7 @@
     overflow: hidden;
     clear: both;
 }
+#ste-metabox-wrap #ste-booking-metabox-message {
+    display: none;
+    text-align: center;
+}
