@@ -61,10 +61,12 @@ if ( ! class_exists( 'STE_Metabox' ) ) {
 			// Set all necessary Shipping Information.
 			$this->ste_set_shipping_info( $theorder );
 
-			if ( ! file_exists( __DIR__ . '/views/ste-metabox-view.php' ) ) {
+
+			// Load the parcel booking form/view.
+			if ( ! file_exists( __DIR__ . '/views/ste-booking-metabox-view.php' ) ) {
 				return;
 			}
-			include __DIR__ . '/views/ste-metabox-view.php';
+			include __DIR__ . '/views/ste-booking-metabox-view.php';
 		}
 
 		/**

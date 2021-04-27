@@ -24,6 +24,8 @@ if ( ! class_exists( 'Ajax' ) ) {
 		public function __construct() {
 			add_action( 'wp_ajax_ste_parcel_tracking_form', array( $this, 'ste_handle_parcel_tracker_form_submission' ) );
 			add_action( 'wp_ajax_nopriv_ste_parcel_tracking_form', array( $this, 'ste_handle_parcel_tracker_form_submission' ) );
+			add_action( 'wp_ajax_ste_booking_metabox_form', array( $this, 'ste_handle_booking_metabox_form_submission' ) );
+
 		}
 
 		/**
@@ -71,6 +73,51 @@ if ( ! class_exists( 'Ajax' ) ) {
 				)
 			);
 
+		}
+
+		/**
+		 * Handle the booking metabox form submission, and generate a parcel booking to eCourier platform.
+		 *
+		 * @return void
+		 */
+		public function ste_handle_booking_metabox_form_submission() {
+			if ( ! isset( $_POST['submit_ste_ecourier_parcel'] ) || ! isset( $_POST['_nonce'] ) ) {
+				die( 'Request is not valid!' );
+			}
+			// Block if valid nonce field is not available and valid.
+			check_ajax_referer( 'ste-admin-nonce', '_nonce' );
+
+			// Post data validation.
+			if (
+				! isset( $_POST['recipient_name'] ) || '' === $_POST['recipient_name'] ||
+				! isset( $_POST['recipient_mobile'] ) || '' === $_POST['recipient_mobile'] ||
+				! isset( $_POST['recipient_city'] ) || '' === $_POST['recipient_city'] ||
+				! isset( $_POST['recipient_area'] ) || '' === $_POST['recipient_area'] ||
+				! isset( $_POST['recipient_thana'] ) || '' === $_POST['recipient_thana'] ||
+				! isset( $_POST['recipient_zip'] ) || '' === $_POST['recipient_zip'] ||
+				! isset( $_POST['recipient_address'] ) || '' === $_POST['recipient_address'] ||
+				! isset( $_POST['payment_method'] ) || '' === $_POST['payment_method'] ||
+				! isset( $_POST['package_code'] ) || '' === $_POST['package_code'] ||
+				! isset( $_POST['package_code'] ) || '' === $_POST['package_code'] ||
+				! isset( $_POST['product_id'] ) || '' === $_POST['product_id'] ||
+				! isset( $_POST['number_of_item'] ) || '' === $_POST['number_of_item'] ||
+				! isset( $_POST['comments'] ) || '' === $_POST['comments']
+			) {
+				wp_send_json_error(
+					array(
+						'message' => __( 'All fields are required!', 'ship-to-ecourier' ),
+					)
+				);
+			}
+
+			// Generate parcel booking data to send to eCourier.
+			$parcel_data = array(
+				'recipient_name' => isset( $_POST['recipient_name'] ) ? sanitize_text_field( wp_unslash( $_POST['recipient_name'] ) ) : '',
+			);
+
+			wp_send_json_success(
+				$_POST
+			);
 		}
 	}
 }

@@ -22,6 +22,7 @@
 #ste-metabox-wrap input[type='submit'] {
     width: auto;
     float: right;
+    box-shadow: none;
 }
 #ste-metabox-wrap ul {
     margin: 0;

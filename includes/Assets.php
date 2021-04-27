@@ -118,7 +118,9 @@ if ( ! class_exists( 'Assets' ) ) {
 				array(
 					'ajaxurl' => admin_url( 'admin-ajax.php' ),
 					'nonce'   => wp_create_nonce( 'ste-admin-nonce' ),
-					'error'   => __( 'Something went wrong!', 'ship-to-ecourier' ),
+					'error'   => array(
+						'required' => __( 'All fields are required!', 'ship-to-ecourier' ),
+					),
 				)
 			);
 
