@@ -30,7 +30,7 @@ if ( ! class_exists( 'STE_Metabox' ) ) {
 		 * @return void;
 		 */
 		public function __construct() {
-			add_action( 'add_meta_boxes', array( $this, 'ste_register_metabox' ) );
+			add_action( 'add_meta_boxes', array( $this, 'register_metabox' ) );
 		}
 
 		/**
@@ -38,8 +38,8 @@ if ( ! class_exists( 'STE_Metabox' ) ) {
 		 *
 		 * @return void;
 		 */
-		public function ste_register_metabox() {
-			add_meta_box( 'ste-booking-metabox', __( 'Ship To eCourier', 'send-to-ecourier' ), array( $this, 'ste_metabox_view_handler' ), 'shop_order', 'side' );
+		public function register_metabox() {
+			add_meta_box( 'ste-booking-metabox', __( 'Ship To eCourier', 'send-to-ecourier' ), array( $this, 'metabox_view_handler' ), 'shop_order', 'side' );
 		}
 
 		/**
@@ -47,7 +47,7 @@ if ( ! class_exists( 'STE_Metabox' ) ) {
 		 *
 		 * @return void
 		 */
-		public function ste_metabox_view_handler() {
+		public function metabox_view_handler() {
 			global $theorder, $post;
 
 			if ( ! is_object( $theorder ) ) {
@@ -59,7 +59,7 @@ if ( ! class_exists( 'STE_Metabox' ) ) {
 			wp_enqueue_script( 'ste-admin-script' );
 
 			// Set all necessary Shipping Information.
-			$this->ste_set_shipping_info( $theorder );
+			$this->set_shipping_info( $theorder );
 
 
 			// Load the parcel booking form/view.
@@ -76,7 +76,7 @@ if ( ! class_exists( 'STE_Metabox' ) ) {
 		 *
 		 * @return void
 		 */
-		public function ste_set_shipping_info( $order ) {
+		public function set_shipping_info( $order ) {
 			$this->shipping_info['recipient_name']    = '' !== trim( $order->get_formatted_shipping_full_name() ) ? $order->get_formatted_shipping_full_name() : $order->get_formatted_billing_full_name();
 			$this->shipping_info['recipient_mobile']  = $order->get_billing_phone();
 			$this->shipping_info['recipient_city']    = '' !== trim( $order->get_shipping_city() ) ? $order->get_shipping_city() : $order->get_billing_city();

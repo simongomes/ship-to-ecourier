@@ -69,13 +69,14 @@ if ( ! class_exists( 'Installer' ) ) {
 			$charset_collate = $wpdb->get_charset_collate();
 			$table_name      = $wpdb->prefix . STE_TABLE_PREFIX . 'shipped_orders';
 
-			$schema = "CREATE TABLE `$table_name` (
-    					`ID` bigint(20) UNSIGNED NOT NULL,
-  						`order_id` bigint(20) UNSIGNED NOT NULL,
-  						`tracking_id` varchar(191) COLLATE utf8mb4_unicode_520_ci NOT NULL,
-  						`created_by` bigint(20) UNSIGNED NOT NULL,
-  						`created_at` timestamp NOT NULL
-					) $charset_collate;";
+			$schema = "CREATE TABLE `{$table_name}` ( 
+    				  	`ID` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+    					`order_id` BIGINT(20) UNSIGNED NOT NULL,
+    					`tracking_id` VARCHAR(191) NOT NULL,
+    					`created_by` BIGINT(20) UNSIGNED NOT NULL,
+    					`created_at` TIMESTAMP NOT NULL,
+    					PRIMARY KEY (`ID`)
+                     ) $charset_collate;";
 
 			if ( ! function_exists( 'dbDelta' ) ) {
 				require_once ABSPATH . 'wp-admin/includes/upgrade.php';

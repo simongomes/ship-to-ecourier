@@ -69,3 +69,37 @@ function ste_get_ecourier_packages() {
 
 	return $packages;
 }
+
+/**
+ * Insert successfully shipped order information to database.
+ *
+ * @param array $args shipped order information.
+ *
+ * @return bool|\WP_Error
+ */
+function ste_insert_shipped_order( $args = array() ) {
+	global $wpdb;
+
+	$table_name = $wpdb->prefix . STE_TABLE_PREFIX . 'shipped_orders';
+
+	$defaults = array(
+		'order_id'    => '',
+		'tracking_id' => '',
+		'created_by'  => get_current_user_id(),
+		'created_at'  => current_time( 'mysql' ),
+	);
+
+	$data = wp_parse_args( $args, $defaults );
+
+	$inserted = $wpdb->insert(
+		$table_name,
+		$data,
+		array( '%d', '%s', '%d', '%s' )
+	); // db call ok; no-cache ok.
+
+	if ( ! $inserted ) {
+		return new \WP_Error( 'failed-to-insert-shipped-order', __( 'Failed to insert shipped order information!', 'ship-to-ecourier' ) );
+	}
+
+	return true;
+}

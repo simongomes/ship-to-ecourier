@@ -147,6 +147,23 @@ if ( ! class_exists( 'Ajax' ) ) {
 			$result = json_decode( $response['body'], true );
 
 			if ( $result['success'] ) {
+				// Insert order shipped record to ste_shipped_orders table.
+				$insert = ste_insert_shipped_order(
+					array(
+						'order_id'    => $parcel_data['product_id'],
+						'tracking_id' => $result['ID'],
+					)
+				);
+
+				// If WP_Error send error message back to admin panel.
+				if ( is_wp_error( $insert ) ) {
+					wp_send_json_error(
+						array(
+							'message' => $insert->get_error_message(),
+						)
+					);
+				}
+
 				// Get the order to update the order status.
 				$order = new \WC_Order( $parcel_data['product_id'] );
 				$order->update_status( 'shipped' );
