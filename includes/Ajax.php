@@ -43,9 +43,9 @@ if ( ! class_exists( 'Ajax' ) ) {
 			// Set eCourier base url.
 			$this->ecourier_base_url = 'live' === $this->settings['api_environment'] ? STE_API_BASE_URL_LIVE : STE_API_BASE_URL_STAGING;
 
-			add_action( 'wp_ajax_ste_parcel_tracking_form', array( $this, 'ste_handle_parcel_tracker_form_submission' ) );
-			add_action( 'wp_ajax_nopriv_ste_parcel_tracking_form', array( $this, 'ste_handle_parcel_tracker_form_submission' ) );
-			add_action( 'wp_ajax_ste_booking_metabox_form', array( $this, 'ste_handle_booking_metabox_form_submission' ) );
+			add_action( 'wp_ajax_ste_parcel_tracking_form', array( $this, 'handle_parcel_tracker_form_submission' ) );
+			add_action( 'wp_ajax_nopriv_ste_parcel_tracking_form', array( $this, 'handle_parcel_tracker_form_submission' ) );
+			add_action( 'wp_ajax_ste_booking_metabox_form', array( $this, 'handle_booking_metabox_form_submission' ) );
 
 		}
 
@@ -54,7 +54,7 @@ if ( ! class_exists( 'Ajax' ) ) {
 		 *
 		 * @return void
 		 */
-		public function ste_handle_parcel_tracker_form_submission() {
+		public function handle_parcel_tracker_form_submission() {
 
 			// Block if valid nonce field is not available and valid.
 			check_ajax_referer( 'ste-frontend-nonce', 'nonce' );
@@ -66,7 +66,7 @@ if ( ! class_exists( 'Ajax' ) ) {
 				$ecourier_api_url = $this->ecourier_base_url . '/track';
 
 				// Make request to eCourier API.
-				$response = $this->ste_make_request( $ecourier_api_url, array( 'ecr' => $tracking_code ) );
+				$response = $this->make_request( $ecourier_api_url, array( 'ecr' => $tracking_code ) );
 
 				// Send response to front-end.
 				wp_send_json_success(
@@ -89,12 +89,13 @@ if ( ! class_exists( 'Ajax' ) ) {
 		 *
 		 * @return void
 		 */
-		public function ste_handle_booking_metabox_form_submission() {
+		public function handle_booking_metabox_form_submission() {
 
 			if ( ! isset( $_POST['submit_ste_ecourier_parcel'] ) || ! isset( $_POST['_nonce'] ) ) {
 				die( 'Request is not valid!' );
 			}
-			// Block if valid nonce field is not available and valid.
+
+			// Block if _nonce field is not available and valid.
 			check_ajax_referer( 'ste-admin-nonce', '_nonce' );
 
 			// Post data validation.
@@ -141,7 +142,7 @@ if ( ! class_exists( 'Ajax' ) ) {
 			$ecourier_api_url = $this->ecourier_base_url . '/order-place';
 
 			// Send parcel booking request to eCourier.
-			$response = $this->ste_make_request( $ecourier_api_url, $parcel_data );
+			$response = $this->make_request( $ecourier_api_url, $parcel_data );
 
 			$result = json_decode( $response['body'], true );
 
@@ -167,7 +168,7 @@ if ( ! class_exists( 'Ajax' ) ) {
 		 *
 		 * @return array|\WP_Error
 		 */
-		public function ste_make_request( string $url, $params = array() ) {
+		public function make_request( string $url, $params = array() ) {
 
 			return wp_remote_post(
 				$url,

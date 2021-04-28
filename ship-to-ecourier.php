@@ -103,6 +103,7 @@ if ( ! class_exists( 'Ship_To_Ecourier' ) ) {
 			define( 'STE_PATH', __DIR__ );
 			define( 'STE_URL', plugins_url( '', STE_FILE ) );
 			define( 'STE_ASSETS_URL', STE_URL . '/assets' );
+			define( 'STE_TABLE_PREFIX', 'ste_' );
 			define( 'STE_API_BASE_URL_STAGING', 'https://staging.ecourier.com.bd/api' );
 			define( 'STE_API_BASE_URL_LIVE', 'https://backoffice.ecourier.com.bd/api' );
 		}

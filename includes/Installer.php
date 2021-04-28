@@ -20,6 +20,7 @@ if ( ! class_exists( 'Installer' ) ) {
 		public function run() {
 			$this->manage_version();
 			$this->create_api_settings_options();
+			$this->create_shipped_orders_table();
 		}
 
 		/**
@@ -54,6 +55,33 @@ if ( ! class_exists( 'Installer' ) ) {
 
 				add_option( 'ste_settings', $settings );
 			}
+		}
+
+		/**
+		 * Create the shipped_order table to store the information of
+		 * successfully shipped orders to eCourier.
+		 *
+		 * @return void
+		 */
+		public function create_shipped_orders_table() {
+			global $wpdb;
+
+			$charset_collate = $wpdb->get_charset_collate();
+			$table_name      = $wpdb->prefix . STE_TABLE_PREFIX . 'shipped_orders';
+
+			$schema = "CREATE TABLE `$table_name` (
+    					`ID` bigint(20) UNSIGNED NOT NULL,
+  						`order_id` bigint(20) UNSIGNED NOT NULL,
+  						`tracking_id` varchar(191) COLLATE utf8mb4_unicode_520_ci NOT NULL,
+  						`created_by` bigint(20) UNSIGNED NOT NULL,
+  						`created_at` timestamp NOT NULL
+					) $charset_collate;";
+
+			if ( ! function_exists( 'dbDelta' ) ) {
+				require_once ABSPATH . 'wp-admin/includes/upgrade.php';
+			}
+
+			dbDelta( $schema );
 		}
 
 	}
