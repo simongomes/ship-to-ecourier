@@ -103,3 +103,23 @@ function ste_insert_shipped_order( $args = array() ) {
 
 	return true;
 }
+
+/**
+ * Check if the order is already shipped and return the status.
+ *
+ * @param int $order_id WC order number.
+ *
+ * @return array|object|bool
+ */
+function ste_get_order_shipping_info( $order_id ) {
+	global $wpdb;
+
+	$table_name = $wpdb->prefix . STE_TABLE_PREFIX . 'shipped_orders';
+
+	$order_shipment_status = $wpdb->get_results( "SELECT * FROM `{$table_name}` WHERE `order_id`={$order_id}"); // phpcs:ignore
+
+	if ( empty( $order_shipment_status ) ) {
+		return false;
+	}
+	return $order_shipment_status[0];
+}

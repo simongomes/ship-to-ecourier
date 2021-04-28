@@ -18,7 +18,7 @@ if ( ! class_exists( 'STE_Metabox' ) ) {
 	class STE_Metabox {
 
 		/**
-		 * Hold all shipping information for eCourier.
+		 * Holds all shipping information for eCourier.
 		 *
 		 * @var array
 		 */
@@ -58,9 +58,14 @@ if ( ! class_exists( 'STE_Metabox' ) ) {
 			wp_enqueue_style( 'ste-admin-styles' );
 			wp_enqueue_script( 'ste-admin-script' );
 
-			// Set all necessary Shipping Information.
-			$this->set_shipping_info( $theorder );
+			$order_shipped = ste_get_order_shipping_info( $theorder->get_order_number() );
 
+			if ( ! $order_shipped ) {
+				// Set all necessary Shipping Information.
+				$this->set_shipping_info( $theorder );
+			} else {
+				$order_shipped->user = get_user_by( 'ID', $order_shipped->created_by )->display_name;
+			}
 
 			// Load the parcel booking form/view.
 			if ( ! file_exists( __DIR__ . '/views/ste-booking-metabox-view.php' ) ) {

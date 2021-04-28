@@ -8,6 +8,7 @@
 ?>
 
 <div id="ste-metabox-wrap">
+	<?php if ( ! $order_shipped ) { ?>
 	<div id="ste-booking-metabox-form">
 		<ul class="ste_metabox submitbox">
 			<li class="wide">
@@ -72,8 +73,28 @@
 		<input type="hidden" name="number_of_item" id="number_of_item" value="<?php echo esc_attr( $this->shipping_info['number_of_item'] ); ?>">
 		<input type="hidden" name="comments" id="comments" value="<?php echo esc_attr( $this->shipping_info['comments'] ); ?>">
 	</div>
-	<div id="ste-booking-metabox-message">
-		<h3 class="title"></h3>
-		<h4><?php esc_html_e( 'Tracking ID: ', 'ship-to-ecourier' ); ?> <span class="tracking_id"></span></h4>
+	<?php } ?>
+	<div id="ste-booking-metabox-message" <?php if ( $order_shipped ) { ?>
+		style="display: block"
+	<?php } ?>
+	>
+		<h3 class="title">
+			<?php if ( $order_shipped ) { ?>
+				<?php esc_html_e( 'Shipped On ', 'ship-to-ecourier' ); ?> <?php echo esc_html( gmdate( 'd F, Y', strtotime( $order_shipped->created_at ) ) ); ?>
+			<?php } ?>
+		</h3>
+		<?php if ( $order_shipped ) { ?>
+			<h4>
+			<?php esc_html_e( 'Shipped By ', 'ship-to-ecourier' ); ?> <?php echo esc_html( $order_shipped->user ); ?>
+			</h4>
+		<?php } ?>
+		<h4>
+			<?php esc_html_e( 'Tracking ID: ', 'ship-to-ecourier' ); ?>
+			<span class="tracking_id">
+				<?php if ( $order_shipped ) { ?>
+					<?php echo esc_html( $order_shipped->tracking_id ); ?>
+				<?php } ?>
+			</span>
+		</h4>
 	</div>
 </div>
