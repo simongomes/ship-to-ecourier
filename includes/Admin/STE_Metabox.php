@@ -81,7 +81,7 @@ if ( ! class_exists( 'STE_Metabox' ) ) {
 		 *
 		 * @return void
 		 */
-		public function set_shipping_info( $order ) {
+		public function set_shipping_info( \WC_Order $order ) {
 			$this->shipping_info['recipient_name']    = '' !== trim( $order->get_formatted_shipping_full_name() ) ? $order->get_formatted_shipping_full_name() : $order->get_formatted_billing_full_name();
 			$this->shipping_info['recipient_mobile']  = $order->get_billing_phone();
 			$this->shipping_info['recipient_city']    = '' !== trim( $order->get_shipping_city() ) ? $order->get_shipping_city() : $order->get_billing_city();

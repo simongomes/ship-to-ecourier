@@ -12,6 +12,7 @@
     let errorMessage = $( '.error-message' );
     let bookingForm = $( '#ste-booking-metabox-form' );
     let bookingMetaBoxMessage = $( '#ste-booking-metabox-message' );
+
     parcelSubmitButton.on("click", function (e) {
         e.preventDefault();
         parcelSubmitButton.prop( 'disabled', true );
