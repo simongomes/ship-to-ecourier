@@ -1,1 +1,1 @@
-# <b>Send To eCourier</b> Plugin is under development, this will lbe updated once a stable version is available
+## <b>Send To eCourier</b> Plugin is under development, this will be updated once a stable version is available
