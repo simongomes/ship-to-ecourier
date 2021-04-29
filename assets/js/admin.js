@@ -13,6 +13,7 @@
     let bookingMetaBoxMessage = $( '#ste-booking-metabox-message' );
     $("#submit_ste_ecourier_parcel").on("click", function (e) {
         e.preventDefault();
+        $( this ).attr( 'disabled', 'true' );
         let _isValid = true;
         let parcelData = {
             recipient_name: $( "#recipient_name", bookingFormWrap ).val(),
