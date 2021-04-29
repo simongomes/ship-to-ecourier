@@ -7,13 +7,14 @@
 //! license uri : https://www.gnu.org/licenses/gpl-3.0.html
 
 ;(function ($) {
+    let parcelSubmitButton = $("#submit_ste_ecourier_parcel");
     let bookingFormWrap = $( "#ste-metabox-wrap" );
     let errorMessage = $( '.error-message' );
     let bookingForm = $( '#ste-booking-metabox-form' );
     let bookingMetaBoxMessage = $( '#ste-booking-metabox-message' );
-    $("#submit_ste_ecourier_parcel").on("click", function (e) {
+    parcelSubmitButton.on("click", function (e) {
         e.preventDefault();
-        $( this ).attr( 'disabled', 'true' );
+        parcelSubmitButton.prop( 'disabled', true );
         let _isValid = true;
         let parcelData = {
             recipient_name: $( "#recipient_name", bookingFormWrap ).val(),
@@ -41,16 +42,19 @@
         });
         if ( ! _isValid ) {
             errorMessage.text( STE_ADMIN.error.required );
+            parcelSubmitButton.prop( 'disabled', false );
         } else {
             errorMessage.text( '' );
             $.post(STE_ADMIN.ajaxurl, parcelData, function ( response ) {
                 if ( ! response.success ) {
                     errorMessage.text( response.data.message );
+                    parcelSubmitButton.prop( 'disabled', false );
                 } else {
                     errorMessage.text( '' );
                     const ecourier_esponse = JSON.parse( response.data.message );
                     if ( ! ecourier_esponse.success  ) {
                         errorMessage.text( ecourier_esponse.errors[0] );
+                        parcelSubmitButton.prop( 'disabled', false );
                     } else {
                         errorMessage.text( '' );
                         $( ".title", bookingMetaBoxMessage ).text( ecourier_esponse.message );
