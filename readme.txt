@@ -1,115 +1,68 @@
-=== Send To Ecourier ===
-Contributors: (this should be a list of wordpress.org userid's)
-Donate link: https://example.com/
-Tags: comments, spam
-Requires at least: 4.5
+=== Ship To Ecourier ===
+Contributors: simongomes02
+Donate link: https://simongomes.dev/
+Tags: ecourier, ecourier-parcel, ship-to-ecourier, ecourier-booking, ecourier-parcel-booking, ecourier-booking-automation, ecourier-parcel-tracker
+Requires at least: 4.0
 Tested up to: 5.7.1
 Requires PHP: 5.6
-Stable tag: 0.1.0
-License: GPLv2 or later
-License URI: https://www.gnu.org/licenses/gpl-2.0.html
+Stable tag: 1.0.1
+License: GPLv3
+License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
-Here is a short description of the plugin.  This should be no more than 150 characters.  No markup here.
+The Plugin gives you ability to send a parcel booking request to eCourier directly from your WooCommerce order dashboard.
 
 == Description ==
 
-This is the long description.  No limit, and you can use Markdown (as well as in the following sections).
+Ship To eCourier WordPress plugin gives you ability to simply book your eCourier parcel request directly from you WooCommerce order dashboard.
+You can use WooCommerce order information and automate your eCourier parcel booking only with some button click. You will only need to provide the eCourier API credentials for your account.
+Other than the shipment and booking automation, the plugin will also provide you a shortcode that you can use for the parcel status tracking. You can add the shortcode to any of your pages and it will give your customer a neat interface for parcel tracking.
 
-For backwards compatibility, if this section is missing, the full length of the short description will be used, and
-Markdown parsed.
+== Features ==
 
-A few notes about the sections above:
+The plugin provides following features.
 
-*   "Contributors" is a comma separated list of wp.org/wp-plugins.org usernames
-*   "Tags" is a comma separated list of tags that apply to the plugin
-*   "Requires at least" is the lowest version that the plugin will work on
-*   "Tested up to" is the highest version that you've *successfully used to test the plugin*. Note that it might work on
-higher versions... this is just the highest one you've verified.
-*   Stable tag should indicate the Subversion "tag" of the latest stable version, or "trunk," if you use `/trunk/` for
-stable.
-
-    Note that the `readme.txt` of the stable tag is the one that is considered the defining one for the plugin, so
-if the `/trunk/readme.txt` file says that the stable tag is `4.3`, then it is `/tags/4.3/readme.txt` that'll be used
-for displaying information about the plugin.  In this situation, the only thing considered from the trunk `readme.txt`
-is the stable tag pointer.  Thus, if you develop in trunk, you can update the trunk `readme.txt` to reflect changes in
-your in-development version, without having that information incorrectly disclosed about the current stable version
-that lacks those changes -- as long as the trunk's `readme.txt` points to the correct stable tag.
-
-    If no stable tag is provided, it is assumed that trunk is stable, but you should specify "trunk" if that's where
-you put the stable version, in order to eliminate any doubt.
+* eCourier parcel booking automation
+* eCourier parcel tracking
 
 == Installation ==
 
-This section describes how to install the plugin and get it working.
+Follow the following steps to install the plugin and get it working.
 
-e.g.
-
-1. Upload `plugin-name.php` to the `/wp-content/plugins/` directory
-1. Activate the plugin through the 'Plugins' menu in WordPress
-1. Place `<?php do_action('plugin_name_hook'); ?>` in your templates
+1. Install the plugin from WordPress plugin library using the Plugins section from the WordPress dashboard, or download the zip file unzip and upload it inside `/wp-content/plugins/` directory of your WordPress installation.
+2. Activate the plugin through the 'Plugins' menu
+3. Once installed *eCourier Settings* menu will be available. Go to the *eCourier Settings* and provide your eCourier API Credentials.
+4. Select the Environment you would like to use (Staging or Live)
 
 == Frequently Asked Questions ==
 
-= A question that someone might have =
+= Do I need eCourier account to use the plugin? =
 
-An answer to that question.
+Yes you will need an eCourier account and API credentials to use this plugin.
 
-= What about foo bar? =
+= Do I need any configuration from eCourier? =
 
-Answer to foo bar dilemma.
+Yes, you will need API credentials for your eCourier account. You can get it from eCourier.
+
+= What credentials do I need to setup the plugin? =
+
+You will need your API credentials which includes `USER-ID`, `API-KEY` and `API-SECRET`.
+
+= How do I get the API credentials? =
+
+You can contact eCourier for the API credentials for your account.
+
+= Do I need WooCommerce for this plugin? =
+
+Yes, the eCourier parcel booking module is dependent on WooCommerce
 
 == Screenshots ==
 
-1. This screen shot description corresponds to screenshot-1.(png|jpg|jpeg|gif). Note that the screenshot is taken from
-the /assets directory or the directory that contains the stable readme.txt (tags or trunk). Screenshots in the /assets
-directory take precedence. For example, `/assets/screenshot-1.png` would win over `/tags/4.3/screenshot-1.png`
-(or jpg, jpeg, gif).
-2. This is the second screen shot
+1. eCourier API settings screen.
+2. eCourier parcel tracking form.
+3. eCourier parcel package information.
+4. eCourier parcel shipment statuses.
 
 == Changelog ==
 
-= 1.0 =
-* A change since the previous version.
-* Another change.
-
-= 0.5 =
-* List versions from most recent at top to oldest at bottom.
-
-== Upgrade Notice ==
-
-= 1.0 =
-Upgrade notices describe the reason a user should upgrade.  No more than 300 characters.
-
-= 0.5 =
-This version fixes a security related bug.  Upgrade immediately.
-
-== Arbitrary section ==
-
-You may provide arbitrary sections, in the same format as the ones above.  This may be of use for extremely complicated
-plugins where more information needs to be conveyed that doesn't fit into the categories of "description" or
-"installation."  Arbitrary sections will be shown below the built-in sections outlined above.
-
-== A brief Markdown Example ==
-
-Ordered list:
-
-1. Some feature
-1. Another feature
-1. Something else about the plugin
-
-Unordered list:
-
-* something
-* something else
-* third thing
-
-Here's a link to [WordPress](https://wordpress.org/ "Your favorite software") and one to [Markdown's Syntax Documentation][markdown syntax].
-Titles are optional, naturally.
-
-[markdown syntax]: https://daringfireball.net/projects/markdown/syntax
-            "Markdown is what the parser uses to process much of the readme file"
-
-Markdown uses email style notation for blockquotes and I've been told:
-> Asterisks for *emphasis*. Double it up  for **strong**.
-
-`<?php code(); // goes in backticks ?>`
+= 1.0.1 =
+* 1.0.1 is the initial release of Parcel Tracker eCourier plugin.

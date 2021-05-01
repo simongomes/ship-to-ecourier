@@ -1,7 +1,7 @@
 <?php // phpcs:ignore
 /**
  * Plugin Name:     Ship To eCourier
- * Plugin URI:      https://simongomes.dev
+ * Plugin URI:      https://github.com/simongomes/ship-to-ecourier
  * Description:     Ship To eCourier gives you ability to send your parcel request to eCourier directly from your WooCommerce dashboard, it enables booking automation from your WordPress website.
  * Author:          Simon Gomes
  * Author URI:      https://simongomes.dev

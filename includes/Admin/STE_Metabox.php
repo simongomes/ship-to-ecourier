@@ -77,7 +77,7 @@ if ( ! class_exists( 'STE_Metabox' ) ) {
 		/**
 		 * Set the shipping info to $shipping_info variable to access from the view.
 		 *
-		 * @param \WC_Order $order will hold the WooCommerce Order object.
+		 * @param \WC_Order $order holds the WooCommerce Order object.
 		 *
 		 * @return void
 		 */
