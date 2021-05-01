@@ -14,7 +14,6 @@
 		<form method="post" id="track-form" action="#">
 			<input type="text" name="tracking_code" placeholder="<?php esc_attr_e( 'Type your tracking number', 'ship-to-ecourier' ); ?>" class="tracking-code form-control">
 
-<!--			--><?php //wp_nonce_field( 'ste-parcel-tracker-search-form' ); ?>
 			<input type="hidden" name="action" value="ste_parcel_tracking_form">
 
 			<button type="submit" class="common-btn">

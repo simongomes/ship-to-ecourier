@@ -1,4 +1,4 @@
-<?php // php:ignore
+<?php // phpcs:ignore
 /**
  * This file is responsible for registering and organizing all assets ( JavaScripts and CSS ) necessary for the Ship To Ecourier plugin.
  *
@@ -11,7 +11,7 @@ if ( ! class_exists( 'Assets' ) ) {
 	/**
 	 * Class Assets
 	 *
-	 * Registers necessary assets like js, css for the Ship To Ecourier plugin
+	 * Registers necessary assets like js, css for the Ship To Ecourier plugin.
 	 */
 	class Assets {
 
@@ -26,8 +26,6 @@ if ( ! class_exists( 'Assets' ) ) {
 			} else {
 				add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_assets' ) );
 			}
-
-
 		}
 
 		/**

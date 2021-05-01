@@ -19,20 +19,20 @@
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-1eb195.svg?style=flat-square)](https://github.com/simongomes/ship-to-ecourier/pulls)
 [![Download Plugin](https://img.shields.io/badge/download-plugin-fbbc04.svg?style=flat-square)](https://wordpress.org/plugins/parcel-tracker-ecourier/)
 
-## Description ==
+## Description 
 
 Ship To eCourier WordPress plugin gives you ability to simply book your eCourier parcel request directly from you WooCommerce order dashboard.
 You can use WooCommerce order information and automate your eCourier parcel booking only with some button click. You will only need to provide the eCourier API credentials for your account.
 Other than the shipment and booking automation, the plugin will also provide you a shortcode that you can use for the parcel status tracking. You can add the shortcode to any of your pages and it will give your customer a neat interface for parcel tracking.
 
-## Features ==
+## Features 
 
 The plugin provides following features.
 
 * eCourier parcel booking automation
 * eCourier parcel tracking
 
-## Installation ==
+## Installation 
 
 Follow the following steps to install the plugin and get it working.
 
