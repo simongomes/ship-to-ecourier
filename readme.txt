@@ -58,9 +58,11 @@ Yes, the eCourier parcel booking module is dependent on WooCommerce
 == Screenshots ==
 
 1. eCourier API settings screen.
-2. eCourier parcel tracking form.
-3. eCourier parcel package information.
-4. eCourier parcel shipment statuses.
+2. eCourier parcel booking form inside order dashboard.
+3. Order status update and tracking information after successful parcel booking.
+4. eCourier parcel tracking form.
+5. eCourier parcel package information.
+6. eCourier parcel shipment statuses.
 
 == Changelog ==
 
