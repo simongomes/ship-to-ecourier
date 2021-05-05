@@ -11,13 +11,13 @@
 
 **Ship To eCourier** gives you ability to send a parcel booking request to eCourier directly from your WooCommerce order dashboard.
 
-[comment]: <> ([![Release]&#40;https://img.shields.io/badge/release-v1.0.0-blue.svg?style=flat-square&#41;]&#40;https://github.com/simongomes/ecourier-parcel-tracker/releases/&#41;)
+[![Release](https://img.shields.io/badge/release-v1.0.1-blue.svg?style=flat-square)](https://github.com/simongomes/ship-to-ecourier/releases/)
 [![GitHub license](https://img.shields.io/badge/license-GPLv3-green.svg?style=flat-square)](https://www.gnu.org/licenses/gpl-3.0.html)
 [![Open Source](https://img.shields.io/badge/open%20source-yes-orange.svg?style=flat-square)](https://github.com/simongomes/ship-to-ecourier)
 [![Made With](https://img.shields.io/badge/made%20with-php-darkgreen.svg?style=flat-square)](https://www.php.net/)
 [![Maintaner](https://img.shields.io/badge/maintaner-Simon%20Gomes-darkred.svg?style=flat-square)](https://simongomes.dev/)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-1eb195.svg?style=flat-square)](https://github.com/simongomes/ship-to-ecourier/pulls)
-[![Download Plugin](https://img.shields.io/badge/download-plugin-fbbc04.svg?style=flat-square)](https://wordpress.org/plugins/parcel-tracker-ecourier/)
+[![Download Plugin](https://img.shields.io/badge/download-plugin-fbbc04.svg?style=flat-square)](https://wordpress.org/plugins/ship-to-ecourier)
 
 ## Description 
 
