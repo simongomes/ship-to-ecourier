@@ -5,13 +5,13 @@
 **Requires at least:** 4.0  
 **Tested up to:** 5.7.1  
 **Requires PHP:** 5.6  
-**Stable tag:** 1.0.1  
+**Stable tag:** 1.0.2  
 **License:** GPLv3  
 **License URI:** https://www.gnu.org/licenses/gpl-3.0.html
 
 **Ship To eCourier** gives you ability to send a parcel booking request to eCourier directly from your WooCommerce order dashboard.
 
-[![Release](https://img.shields.io/badge/release-v1.0.1-blue.svg?style=flat-square)](https://github.com/simongomes/ship-to-ecourier/releases/)
+[![Release](https://img.shields.io/badge/release-v1.0.2-blue.svg?style=flat-square)](https://github.com/simongomes/ship-to-ecourier/releases/)
 [![GitHub license](https://img.shields.io/badge/license-GPLv3-green.svg?style=flat-square)](https://www.gnu.org/licenses/gpl-3.0.html)
 [![Open Source](https://img.shields.io/badge/open%20source-yes-orange.svg?style=flat-square)](https://github.com/simongomes/ship-to-ecourier)
 [![Made With](https://img.shields.io/badge/made%20with-php-darkgreen.svg?style=flat-square)](https://www.php.net/)
@@ -67,6 +67,9 @@ Yes, the eCourier parcel booking module is dependent on WooCommerce
 
 *1.0.1*
 > 1.0.1 is the initial release of Parcel Tracker eCourier plugin.
+
+*1.0.2*
+> CSRF validation added for settings from against un necessary security breach.
 
 ## Contributors
 <a href="https://github.com/simongomes">

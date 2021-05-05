@@ -7,7 +7,7 @@
  * Author URI:      https://simongomes.dev
  * Text Domain:     ship-to-ecourier
  * Domain Path:     /languages
- * Version:         1.0.1
+ * Version:         1.0.2
  * License:         GPLv3
  * License URI:     https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -62,7 +62,7 @@ if ( ! class_exists( 'Ship_To_Ecourier' ) ) {
 		 *
 		 * @var string
 		 */
-		const VERSION = '1.0.1';
+		const VERSION = '1.0.2';
 
 		/**
 		 * Ship_To_Ecourier constructor.

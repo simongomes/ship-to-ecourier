@@ -5,7 +5,7 @@ Tags: ecourier, ecourier-parcel, ship-to-ecourier, ecourier-booking, ecourier-pa
 Requires at least: 4.0
 Tested up to: 5.7.1
 Requires PHP: 5.6
-Stable tag: 1.0.1
+Stable tag: 1.0.2
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -68,3 +68,6 @@ Yes, the eCourier parcel booking module is dependent on WooCommerce
 
 = 1.0.1 =
 * 1.0.1 is the initial release of Parcel Tracker eCourier plugin.
+
+= 1.0.2 =
+* CSRF validation added for settings from against un necessary security breach.
