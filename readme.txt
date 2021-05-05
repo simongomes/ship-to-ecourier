@@ -70,4 +70,4 @@ Yes, the eCourier parcel booking module is dependent on WooCommerce
 * 1.0.1 is the initial release of Parcel Tracker eCourier plugin.
 
 = 1.0.2 =
-* CSRF validation added for settings from against unnecessary security breach.
+* CSRF validation added for settings form, to protect against unnecessary security breach.
