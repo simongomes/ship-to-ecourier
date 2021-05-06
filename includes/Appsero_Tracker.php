@@ -1,6 +1,6 @@
 <?php // phpcs:ignore
 /**
- * This file is responsible for registering and organizing all assets ( JavaScripts and CSS ) necessary for the Ship To Ecourier plugin.
+ * This file is responsible for Appsero tracker to track plugin analytics data.
  *
  * @package ShipToEcourier
  */
