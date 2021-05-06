@@ -15,5 +15,8 @@
         "ShipToEcourier\\": "includes/"
       },
       "files": [ "includes/functions.php" ]
+    },
+    "require": {
+        "appsero/client": "dev-develop"
     }
 }

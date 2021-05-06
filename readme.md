@@ -5,7 +5,7 @@
 **Requires at least:** 4.0  
 **Tested up to:** 5.7.1  
 **Requires PHP:** 5.6  
-**Stable tag:** 1.0.2  
+**Stable tag:** 1.0.3  
 **License:** GPLv3  
 **License URI:** https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -63,13 +63,26 @@ You can contact eCourier for the API credentials for your account.
 
 Yes, the eCourier parcel booking module is dependent on WooCommerce
 
+## Privacy Policy
+
+Ship To Ecourier uses [Appsero](https://appsero.com) SDK to collect some telemetry data upon user's confirmation. This helps us to troubleshoot problems faster & make product improvements.
+
+Appsero SDK **does not gather any data by default.** The SDK only starts gathering basic telemetry data **when a user allows it via the admin notice**. We collect the data to ensure a great user experience for all our users.
+
+Integrating Appsero SDK **DOES NOT IMMEDIATELY** start gathering data, **without confirmation from users in any case.**
+
+Learn more about how [Appsero collects and uses this data](https://appsero.com/privacy-policy/).
+
 ## Changelog
 
-*1.0.1*
-> 1.0.1 is the initial release of Parcel Tracker eCourier plugin.
+*1.0.3*
+> Added: Appsero tracker to track plugin analytics data
 
 *1.0.2*
 > CSRF validation added for settings form, to protect against unnecessary security breach.
+
+*1.0.1*
+> 1.0.1 is the initial release of Parcel Tracker eCourier plugin.
 
 ## Contributors
 <a href="https://github.com/simongomes">

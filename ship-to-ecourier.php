@@ -7,7 +7,7 @@
  * Author URI:      https://simongomes.dev
  * Text Domain:     ship-to-ecourier
  * Domain Path:     /languages
- * Version:         1.0.2
+ * Version:         1.0.3
  * License:         GPLv3
  * License URI:     https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -40,6 +40,8 @@
  * **********************************************************************
  */
 
+use ShipToEcourier\Appsero_Tracker;
+
 // Block direct access to the file.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -62,7 +64,7 @@ if ( ! class_exists( 'Ship_To_Ecourier' ) ) {
 		 *
 		 * @var string
 		 */
-		const VERSION = '1.0.2';
+		const VERSION = '1.0.3';
 
 		/**
 		 * Ship_To_Ecourier constructor.
@@ -114,6 +116,9 @@ if ( ! class_exists( 'Ship_To_Ecourier' ) ) {
 		 * @return void
 		 */
 		public function init_plugin() {
+			// Initialize the Appsero tracker for plugin analytics.
+			Appsero_Tracker::init_tracker();
+
 			// Call Assets class to load necessary assets for plugin ( JavaScript and CSS ).
 			new ShipToEcourier\Assets();
 
