@@ -64,7 +64,7 @@
 				<p class="error-message"></p>
 			</li>
 			<li class="wide">
-				<?php submit_button( __( 'Submit', 'ship-to-ecourier' ), 'primary', 'submit_ste_ecourier_parcel', false ); ?>
+				<?php submit_button( __( 'Submit', 'ship-to-ecourier' ), 'primary', 'submit-ste-ecourier-parcel', false ); ?>
 			</li>
 
 		</ul>
@@ -97,4 +97,13 @@
 			</span>
 		</h4>
 	</div>
+
+    <p class="error-message"></p>
+
+	<?php if ( $order_shipped ) { ?>
+		<div id="ste-metabox-actions">
+			<button id="ste-print-label" class="button button-primary" value="<?php echo esc_html( $order_shipped->tracking_id ); ?>">Print Label</button>
+			<button id="ste-cancle-order" class="button button-cancel" value="<?php echo esc_html( $order_shipped->tracking_id ); ?>">Cancle Order</button>
+		</div>
+	<?php } ?>
 </div>

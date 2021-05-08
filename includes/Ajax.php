@@ -46,6 +46,7 @@ if ( ! class_exists( 'Ajax' ) ) {
 			add_action( 'wp_ajax_ste_parcel_tracking_form', array( $this, 'handle_parcel_tracker_form_submission' ) );
 			add_action( 'wp_ajax_nopriv_ste_parcel_tracking_form', array( $this, 'handle_parcel_tracker_form_submission' ) );
 			add_action( 'wp_ajax_ste_booking_metabox_form', array( $this, 'handle_booking_metabox_form_submission' ) );
+			add_action( 'wp_ajax_ste_label_print', array( $this, 'handle_label_print' ) );
 
 		}
 
@@ -91,7 +92,7 @@ if ( ! class_exists( 'Ajax' ) ) {
 		 */
 		public function handle_booking_metabox_form_submission() {
 
-			if ( ! isset( $_POST['submit_ste_ecourier_parcel'] ) || ! isset( $_POST['_nonce'] ) ) {
+			if ( ! isset( $_POST['submit-ste-ecourier-parcel'] ) || ! isset( $_POST['_nonce'] ) ) {
 				die( 'Request is not valid!' );
 			}
 
@@ -173,6 +174,51 @@ if ( ! class_exists( 'Ajax' ) ) {
 			wp_send_json_success(
 				array(
 					'message' => $response['body'],
+				)
+			);
+		}
+
+
+		/**
+		 * Handle label print request for parcel bookings.
+		 *
+		 * @retun void
+		 */
+		public function handle_label_print() {
+			if ( ! isset( $_POST['tracking'] ) || ! isset( $_POST['_nonce'] ) ) {
+				wp_send_json_error(
+					array(
+						'message' => __( 'Request is not valid!', 'ship-to-ecourier' ),
+					)
+				);
+			}
+
+			// Block if _nonce field is not available and valid.
+			check_ajax_referer( 'ste-admin-nonce', '_nonce' );
+
+			// Generate label print data to send to eCourier.
+			$label_data = array(
+				'tracking' => sanitize_text_field( wp_unslash( $_POST['tracking'] ) ),
+			);
+
+			$ecourier_api_url = $this->ecourier_base_url . '/label-print';
+
+			// Send parcel booking request to eCourier.
+			$response = $this->make_request( $ecourier_api_url, $label_data );
+
+			$result = json_decode( $response['body'], true );
+
+			if ( ! $result['success'] ) {
+				wp_send_json_error(
+					array(
+						'message' => $result['query_data'],
+					)
+				);
+			}
+
+			wp_send_json_success(
+				array(
+					'message' => $result['query_data'],
 				)
 			);
 		}

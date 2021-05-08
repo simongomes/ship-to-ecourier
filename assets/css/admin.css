@@ -35,3 +35,8 @@
     display: none;
     text-align: center;
 }
+
+#ste-metabox-actions {
+    display: flex;
+    justify-content: space-between;
+}

@@ -7,7 +7,8 @@
 //! license uri : https://www.gnu.org/licenses/gpl-3.0.html
 
 ;(function ($) {
-    let parcelSubmitButton = $("#submit_ste_ecourier_parcel");
+    // eCourier Parcel Booking - start
+    let parcelSubmitButton = $("#submit-ste-ecourier-parcel");
     let bookingFormWrap = $( "#ste-metabox-wrap" );
     let errorMessage = $( '.error-message' );
     let bookingForm = $( '#ste-booking-metabox-form' );
@@ -67,6 +68,34 @@
                 }
             })
         }
-
     });
+    // eCourier Parcel Booking - end
+
+    // eCourier Print Label - start
+    let labelPrintButton = $("#ste-print-label");
+
+    labelPrintButton.on( 'click', function (e) {
+        e.preventDefault();
+        labelPrintButton.prop( 'disabled', true );
+
+        let labelData = {
+            tracking : labelPrintButton.val(),
+            action   : 'ste_label_print',
+            _nonce   : STE_ADMIN.nonce,
+        }
+
+        $.post(STE_ADMIN.ajaxurl, labelData, function ( response ) {
+            if ( ! response.success ) {
+                errorMessage.text(response.data.message);
+            } else {
+                errorMessage.text("");
+
+                // On success open the label in a new window.
+                open(response.data.message);
+            }
+            labelPrintButton.prop( 'disabled', false );
+        });
+    })
+    // eCourier Print Label - end
+
 })(jQuery, window);
