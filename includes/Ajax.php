@@ -47,6 +47,7 @@ if ( ! class_exists( 'Ajax' ) ) {
 			add_action( 'wp_ajax_nopriv_ste_parcel_tracking_form', array( $this, 'handle_parcel_tracker_form_submission' ) );
 			add_action( 'wp_ajax_ste_booking_metabox_form', array( $this, 'handle_booking_metabox_form_submission' ) );
 			add_action( 'wp_ajax_ste_label_print', array( $this, 'handle_label_print' ) );
+			add_action( 'wp_ajax_ste_cancel_parcel_request', array( $this, 'handle_parcel_cancel_request' ) );
 
 		}
 
@@ -92,7 +93,7 @@ if ( ! class_exists( 'Ajax' ) ) {
 		 */
 		public function handle_booking_metabox_form_submission() {
 
-			if ( ! isset( $_POST['submit-ste-ecourier-parcel'] ) || ! isset( $_POST['_nonce'] ) ) {
+			if ( ! isset( $_POST['submit_ste_ecourier_parcel'] ) || ! isset( $_POST['_nonce'] ) ) {
 				die( 'Request is not valid!' );
 			}
 
@@ -185,6 +186,7 @@ if ( ! class_exists( 'Ajax' ) ) {
 		 * @retun void
 		 */
 		public function handle_label_print() {
+			// Check if necessary fields are available.
 			if ( ! isset( $_POST['tracking'] ) || ! isset( $_POST['_nonce'] ) ) {
 				wp_send_json_error(
 					array(
@@ -203,7 +205,7 @@ if ( ! class_exists( 'Ajax' ) ) {
 
 			$ecourier_api_url = $this->ecourier_base_url . '/label-print';
 
-			// Send parcel booking request to eCourier.
+			// Send parcel label print request to eCourier.
 			$response = $this->make_request( $ecourier_api_url, $label_data );
 
 			$result = json_decode( $response['body'], true );
@@ -224,6 +226,63 @@ if ( ! class_exists( 'Ajax' ) ) {
 		}
 
 		/**
+		 * Handle parcel cancel request.
+		 *
+		 * @retun void
+		 */
+		public function handle_parcel_cancel_request() {
+			// Check if necessary fields are available.
+			if ( ! isset( $_POST['tracking'] ) || ! isset( $_POST['_nonce'] ) ) {
+				wp_send_json_error(
+					array(
+						'message' => __( 'Request is not valid!', 'ship-to-ecourier' ),
+					)
+				);
+			}
+
+			// Block if _nonce field is not available and valid.
+			check_ajax_referer( 'ste-admin-nonce', '_nonce' );
+
+			// Generate label print data to send to eCourier.
+			$label_data = array(
+				'tracking' => sanitize_text_field( wp_unslash( $_POST['tracking'] ) ),
+				'comment'  => __( 'Please cancle the parcel.', 'ship-to-ecourier' ),
+			);
+
+			$ecourier_api_url = $this->ecourier_base_url . '/cancel-order';
+
+			// Send parcel cancel request to eCourier.
+			$response = $this->make_request( $ecourier_api_url, $label_data );
+
+			$result = json_decode( $response['body'], true );
+
+			if ( ! 'true' === $result['success'] ) {
+				wp_send_json_error(
+					array(
+						'message' => $result['message'],
+					)
+				);
+			} else {
+				$deleted = ste_remove_shipped_order( sanitize_text_field( wp_unslash( $_POST['tracking'] ) ) );
+
+				// If WP_Error send error message back to admin panel.
+				if ( is_wp_error( $deleted ) ) {
+					wp_send_json_error(
+						array(
+							'message' => $deleted->get_error_message(),
+						)
+					);
+				}
+			}
+
+			wp_send_json_success(
+				array(
+					'message' => $result['message'],
+				)
+			);
+		}
+
+		/**
 		 * Make request to eCourier API.
 		 *
 		 * @param string $url API end-point.
@@ -231,7 +290,7 @@ if ( ! class_exists( 'Ajax' ) ) {
 		 *
 		 * @return array|\WP_Error
 		 */
-		public function make_request( string $url, $params = array() ) {
+		public function make_request( $url, $params = array() ) {
 
 			return wp_remote_post(
 				$url,

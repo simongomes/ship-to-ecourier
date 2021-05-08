@@ -8,7 +8,7 @@
 
 ;(function ($) {
     // eCourier Parcel Booking - start
-    let parcelSubmitButton = $("#submit-ste-ecourier-parcel");
+    let parcelSubmitButton = $("#submit_ste_ecourier_parcel");
     let bookingFormWrap = $( "#ste-metabox-wrap" );
     let errorMessage = $( '.error-message' );
     let bookingForm = $( '#ste-booking-metabox-form' );
@@ -72,30 +72,62 @@
     // eCourier Parcel Booking - end
 
     // eCourier Print Label - start
-    let labelPrintButton = $("#ste-print-label");
+    if ($("#ste-print-label").length) {
+        let labelPrintButton = $("#ste-print-label");
 
-    labelPrintButton.on( 'click', function (e) {
-        e.preventDefault();
-        labelPrintButton.prop( 'disabled', true );
+        labelPrintButton.on('click', function (e) {
+            e.preventDefault();
+            labelPrintButton.text('Downloading...');
+            labelPrintButton.prop('disabled', true);
 
-        let labelData = {
-            tracking : labelPrintButton.val(),
-            action   : 'ste_label_print',
-            _nonce   : STE_ADMIN.nonce,
-        }
-
-        $.post(STE_ADMIN.ajaxurl, labelData, function ( response ) {
-            if ( ! response.success ) {
-                errorMessage.text(response.data.message);
-            } else {
-                errorMessage.text("");
-
-                // On success open the label in a new window.
-                open(response.data.message);
+            let labelData = {
+                tracking: labelPrintButton.val(),
+                action: 'ste_label_print',
+                _nonce: STE_ADMIN.nonce,
             }
-            labelPrintButton.prop( 'disabled', false );
-        });
-    })
+
+            $.post(STE_ADMIN.ajaxurl, labelData, function (response) {
+                if (!response.success) {
+                    errorMessage.text(response.data.message);
+                } else {
+                    errorMessage.text("");
+
+                    // On success open the label in a new window.
+                    open(response.data.message);
+                }
+                labelPrintButton.text('Print Label');
+                labelPrintButton.prop('disabled', false);
+            });
+        })
+    }
     // eCourier Print Label - end
+
+    // eCourier Cancel Order - start
+    if ($("#ste-cancel-order").length) {
+        let cancleOrderButton = $("#ste-cancel-order");
+        cancleOrderButton.on('click', function (e) {
+            e.preventDefault();
+            cancleOrderButton.text('Processing...');
+            cancleOrderButton.prop('disabled', true);
+
+            let orderData = {
+                tracking: cancleOrderButton.val(),
+                action: 'ste_cancel_parcel_request',
+                _nonce: STE_ADMIN.nonce,
+            }
+
+            $.post(STE_ADMIN.ajaxurl, orderData, function (response) {
+                console.log( response );
+                if (!response.success) {
+                    errorMessage.text(response.data.message);
+                } else {
+                    errorMessage.text("");
+                    window.location.reload();
+                }
+                cancleOrderButton.text('Cancel Order');
+            });
+        });
+    }
+    // eCourier Cancel Order - end
 
 })(jQuery, window);

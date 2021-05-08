@@ -105,6 +105,30 @@ function ste_insert_shipped_order( $args = array() ) {
 }
 
 /**
+ * Remove shipped order information from database.
+ *
+ * @param string $tracking_id shipped order tracking ID.
+ *
+ * @return bool|\WP_Error
+ */
+function ste_remove_shipped_order( $tracking_id ) {
+	global $wpdb;
+
+	$table_name = $wpdb->prefix . STE_TABLE_PREFIX . 'shipped_orders';
+
+	$deleted = $wpdb->delete(
+		$table_name,
+		array( 'tracking_id' => $tracking_id )
+	); // db call ok; no-cache ok.
+
+	if ( ! $deleted ) {
+		return new \WP_Error( 'failed-to-removed-shipped-order', __( 'Failed to removed shipped order information!', 'ship-to-ecourier' ) );
+	}
+
+	return true;
+}
+
+/**
  * Check if the order is already shipped and return the status.
  *
  * @param int $order_id WC order number.

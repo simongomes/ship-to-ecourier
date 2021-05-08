@@ -5,7 +5,7 @@ Tags: ecourier, ecourier-parcel, ship-to-ecourier, ecourier-booking, ecourier-pa
 Requires at least: 4.0
 Tested up to: 5.7.1
 Requires PHP: 5.6
-Stable tag: 1.0.3
+Stable tag: 1.1.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -75,6 +75,10 @@ Integrating Appsero SDK **DOES NOT IMMEDIATELY** start gathering data, **without
 Learn more about how [Appsero collects and uses this data](https://appsero.com/privacy-policy/).
 
 == Changelog ==
+
+= 1.1.0 =
+* Added: Label printing feature
+* Added: Cancel parcel booking feature
 
 = 1.0.3 =
 * Added: Appsero tracker to track plugin analytics data
