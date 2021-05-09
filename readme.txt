@@ -1,4 +1,4 @@
-=== Ship To Ecourier ===
+=== Ship To eCourier ===
 Contributors: simongomes02
 Donate link: https://simongomes.dev/
 Tags: ecourier, ecourier-parcel, ship-to-ecourier, ecourier-booking, ecourier-parcel-booking, ecourier-booking-automation, ecourier-parcel-tracker
