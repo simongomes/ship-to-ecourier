@@ -9,7 +9,7 @@
 **License:** GPLv3  
 **License URI:** https://www.gnu.org/licenses/gpl-3.0.html
 
-**Ship To eCourier** gives you ability to send a parcel booking request to eCourier directly from your WooCommerce order dashboard.
+**Ship To eCourier** gives you the ability to send a parcel booking request to eCourier directly from your WooCommerce order dashboard.
 
 [![Release](https://img.shields.io/badge/release-v1.1.0-blue.svg?style=flat-square)](https://github.com/simongomes/ship-to-ecourier/releases/)
 [![GitHub license](https://img.shields.io/badge/license-GPLv3-green.svg?style=flat-square)](https://www.gnu.org/licenses/gpl-3.0.html)
@@ -21,8 +21,10 @@
 
 ## Description 
 
-Ship To eCourier WordPress plugin gives you ability to simply book your eCourier parcel request directly from you WooCommerce order dashboard.
-You can use WooCommerce order information and automate your eCourier parcel booking only with some button click. You will only need to provide the eCourier API credentials for your account.
+*Ship To eCourier* WordPress plugin gives you the ability to simply book your eCourier parcel request directly from your WooCommerce order dashboard.
+
+You can use *WooCommerce* order information and automate your *eCourier* parcel booking only with some button click. You will only need to provide the eCourier API credentials for your account.
+
 Other than the shipment and booking automation, the plugin will also provide you a shortcode that you can use for the parcel status tracking. You can add the shortcode to any of your pages and it will give your customer a neat interface for parcel tracking.
 
 ## Features 
@@ -38,14 +40,14 @@ Follow the following steps to install the plugin and get it working.
 
 1. Install the plugin from WordPress plugin library using the Plugins section from the WordPress dashboard, or download the zip file unzip and upload it inside `/wp-content/plugins/` directory of your WordPress installation.
 2. Activate the plugin through the 'Plugins' menu.
-3. Once installed *eCourier Settings* menu will be available. Go to the *eCourier Settings* and provide your eCourier API Credentials.
+3. Once installed, *eCourier Settings* menu will be available. Go to the *eCourier Settings* and provide your eCourier API Credentials.
 4. Select the Environment you would like to use (Staging or Live).
 
 ## Frequently Asked Questions
 
 **Do I need eCourier account to use the plugin?**
 
-Yes you will need an eCourier account and API credentials to user this plugin.
+Yes, you will need an eCourier account and API credentials to user this plugin.
 
 **Do I need any configuration from eCourier?**
 
@@ -53,7 +55,7 @@ Yes, you will need API credentials for you eCourier account. You can get it from
 
 **What credentials do I need to setup the plugin?**
 
-You will need your API credentials which includes `USER-ID`, `API-KEY` and `API-SECRET`.
+You will need your API credentials which include `USER-ID`, `API-KEY` and `API-SECRET`.
 
 **How do I get the API credentials?**
 
