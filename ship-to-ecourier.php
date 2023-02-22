@@ -67,6 +67,13 @@ if ( ! class_exists( 'Ship_To_Ecourier' ) ) {
 		const VERSION = '1.1.0';
 
 		/**
+		 * Holds various class instances.
+		 *
+		 * @var array
+		 */
+		private $container = [];
+
+		/**
 		 * Ship_To_Ecourier constructor.
 		 *
 		 * @return void
@@ -77,6 +84,8 @@ if ( ! class_exists( 'Ship_To_Ecourier' ) ) {
 			register_activation_hook( __FILE__, array( $this, 'activate' ) );
 
 			add_action( 'plugins_loaded', array( $this, 'init_plugin' ) );
+
+			add_action( 'init', [ $this, 'init_classes' ] );
 		}
 
 		/**
@@ -85,13 +94,39 @@ if ( ! class_exists( 'Ship_To_Ecourier' ) ) {
 		 * @return \Ship_To_Ecourier
 		 */
 		public static function init() {
-			$instance = false;
+			static $instance = false;
 
 			if ( ! $instance ) {
 				$instance = new self();
 			}
 
 			return $instance;
+		}
+
+		/**
+		 * Magic getter to bypass referencing plugin.
+		 *
+		 * @param mixed $prop Properties to find.
+		 *
+		 * @return mixed
+		 */
+		public function __get( $prop ) {
+			if ( array_key_exists( $prop, $this->container ) ) {
+				return $this->container[ $prop ];
+			}
+
+			return $this->{$prop};
+		}
+
+		/**
+		 * Magic isset to bypass referencing plugin.
+		 *
+		 * @param mixed $prop Properties to find.
+		 *
+		 * @return mixed
+		 */
+		public function __isset( $prop ) {
+			return isset( $this->{$prop} ) || isset( $this->container[ $prop ] );
 		}
 
 		/**
@@ -134,6 +169,15 @@ if ( ! class_exists( 'Ship_To_Ecourier' ) ) {
 				// Load Frontend classes.
 				new ShipToEcourier\Frontend();
 			}
+		}
+
+		/**
+		 * Initialize classes
+		 *
+		 * @return void
+		 */
+		public function init_classes() {
+			$this->container['ecourier'] = new ShipToEcourier\Ecourier_Handler();
 		}
 
 		/**

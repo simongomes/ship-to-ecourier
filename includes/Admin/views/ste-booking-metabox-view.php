@@ -5,6 +5,9 @@
  * @package SendToEcourier\Admin
  */
 
+$recipient_thana     = '';
+$recipient_post_code = '';
+
 ?>
 
 <div id="ste-metabox-wrap">
@@ -20,20 +23,44 @@
 				<input class="input-text" type="text" name="recipient_mobile" id="recipient_mobile" placeholder="<?php esc_attr__( 'Recipient Mobile', 'ship-to-ecourier' ); ?>"  value="<?php echo esc_attr( $this->shipping_info['recipient_mobile'] ); ?>">
 			</li>
 			<li class="wide">
-				<label for="recipient_city"><?php esc_attr_e( 'Recipient City', 'ship-to-ecourier' ); ?></label>
-				<input class="input-text" type="text" name="recipient_city" id="recipient_city" placeholder="<?php esc_attr__( 'Recipient City', 'ship-to-ecourier' ); ?>"  value="<?php echo esc_attr( $this->shipping_info['recipient_city'] ); ?>">
+				<label for="recipient_city"><?php esc_attr_e( 'Recipient District', 'ship-to-ecourier' ); ?></label>
+				<select name="recipient_city" id="recipient_city" class="wc-enhanced-select">
+					<?php $cities = ship_to_ecourier()->ecourier->get_city_list(); ?>
+
+					<?php
+					foreach ( $cities as $city ) :
+						$city_val = strtolower( $city['value'] );
+						?>
+					<option value="<?php echo $city_val; ?>" <?php echo $city_val === $this->shipping_info['recipient_city'] ? 'selected' : false; ?> ><?php echo $city['name']; ?></option>
+					<?php endforeach; ?>
+				</select>
 			</li>
 			<li class="wide">
 				<label for="recipient_area"><?php esc_attr_e( 'Recipient Area', 'ship-to-ecourier' ); ?></label>
-				<input class="input-text" type="text" name="recipient_area" id="recipient_area" placeholder="<?php esc_attr__( 'Recipient Area', 'ship-to-ecourier' ); ?>"  value="<?php echo esc_attr( $this->shipping_info['recipient_area'] ); ?>">
+
+				<select name="recipient_area" id="recipient_area" class="wc-enhanced-select">
+					<?php
+					$areas = ship_to_ecourier()->ecourier->get_area_by_district( $this->shipping_info['recipient_city'] );
+
+					foreach ( $areas as $area ) :
+						$area_val = strtolower( $area['name'] );
+
+						if ( $area_val === $this->shipping_info['recipient_area'] ) {
+							$recipient_thana     = strtolower( $area['thana'] );
+							$recipient_post_code = $area['post_code'];
+						}
+						?>
+						<option value="<?php echo $area_val; ?>" <?php echo $area_val === $this->shipping_info['recipient_area'] ? 'selected' : false; ?> ><?php echo $area['name']; ?></option>
+					<?php endforeach; ?>
+				</select>
 			</li>
 			<li class="wide">
 				<label for="recipient_thana"><?php esc_attr_e( 'Recipient Thana', 'ship-to-ecourier' ); ?></label>
-				<input class="input-text" type="text" name="recipient_thana" id="recipient_thana" placeholder="<?php esc_attr__( 'Recipient Thana', 'ship-to-ecourier' ); ?>"  value="<?php echo esc_attr( $this->shipping_info['recipient_thana'] ); ?>">
+				<input class="input-text" type="text" name="recipient_thana" id="recipient_thana" placeholder="<?php esc_attr__( 'Recipient Thana', 'ship-to-ecourier' ); ?>"  value="<?php echo esc_attr( $recipient_thana ); ?>" readonly>
 			</li>
 			<li class="wide">
 				<label for="recipient_zip"><?php esc_attr_e( 'Recipient Zip', 'ship-to-ecourier' ); ?></label>
-				<input class="input-text" type="text" name="recipient_zip" id="recipient_zip" placeholder="<?php esc_attr__( 'Recipient Zip', 'ship-to-ecourier' ); ?>"  value="<?php echo esc_attr( $this->shipping_info['recipient_zip'] ); ?>">
+				<input class="input-text" type="text" name="recipient_zip" id="recipient_zip" placeholder="<?php esc_attr__( 'Recipient Zip', 'ship-to-ecourier' ); ?>"  value="<?php echo esc_attr( $recipient_post_code ); ?>" readonly>
 			</li>
 			<li class="wide">
 				<label for="recipient_address"><?php esc_attr_e( 'Recipient Address', 'ship-to-ecourier' ); ?></label>
@@ -41,7 +68,7 @@
 			</li>
 			<li class="wide">
 				<label for="payment_method"><?php esc_attr_e( 'Payment Method', 'ship-to-ecourier' ); ?></label>
-				<select name="payment_method" id="payment_method">
+				<select name="payment_method" id="payment_method" class="wc-enhanced-select">
 					<option value="CCRD"><?php esc_html_e( 'Card Payment', 'ship-to-ecourier' ); ?></option>
 					<option value="COD" <?php echo 'cod' === $this->shipping_info['payment_method'] ? 'selected' : false; ?>><?php esc_html_e( 'Cash On Delivery', 'ship-to-ecourier' ); ?></option>
 					<option value="MPAY"><?php esc_html_e( 'Mobile Payment', 'ship-to-ecourier' ); ?></option>
@@ -50,7 +77,7 @@
 			</li>
 			<li class="wide">
 				<label for="package_code"><?php esc_attr_e( 'Package', 'ship-to-ecourier' ); ?></label>
-				<select name="package_code" id="package_code">
+				<select name="package_code" id="package_code" class="wc-enhanced-select">
 					<?php
 					foreach ( $this->shipping_info['package_code'] as $package ) {
 						?>

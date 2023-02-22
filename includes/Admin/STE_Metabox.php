@@ -84,8 +84,8 @@ if ( ! class_exists( 'STE_Metabox' ) ) {
 		public function set_shipping_info( \WC_Order $order ) {
 			$this->shipping_info['recipient_name']    = '' !== trim( $order->get_formatted_shipping_full_name() ) ? $order->get_formatted_shipping_full_name() : $order->get_formatted_billing_full_name();
 			$this->shipping_info['recipient_mobile']  = $order->get_billing_phone();
-			$this->shipping_info['recipient_city']    = '' !== trim( $order->get_shipping_city() ) ? $order->get_shipping_city() : $order->get_billing_city();
-			$this->shipping_info['recipient_area']    = '';
+			$this->shipping_info['recipient_city']    = '' !== trim( $order->get_shipping_state() ) ? strtolower( $order->get_shipping_state() ) : strtolower( $order->get_billing_state() );
+			$this->shipping_info['recipient_area']    = '' !== trim( $order->get_shipping_city() ) ? strtolower( $order->get_shipping_city() ) : strtolower( $order->get_billing_city() );
 			$this->shipping_info['recipient_thana']   = '';
 			$this->shipping_info['recipient_zip']     = '' !== trim( $order->get_shipping_postcode() ) ? $order->get_shipping_postcode() : $order->get_billing_postcode();
 			$this->shipping_info['recipient_address'] = '' !== trim( $order->get_shipping_address_1() ) ? $order->get_shipping_address_1() . '' . $order->get_shipping_address_2() : $order->get_billing_address_1() . ' ' . $order->get_billing_address_2();
