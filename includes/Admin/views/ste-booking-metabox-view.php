@@ -50,7 +50,12 @@ $recipient_post_code = '';
 							$recipient_post_code = $area['post_code'];
 						}
 						?>
-						<option value="<?php echo $area_val; ?>" <?php echo $area_val === $this->shipping_info['recipient_area'] ? 'selected' : false; ?> ><?php echo $area['name']; ?></option>
+						<option
+							data-thana="<?php echo $area['thana']; ?>"
+							data-post_code="<?php echo $area['post_code']; ?>"
+							value="<?php echo $area_val; ?>" <?php echo $area_val === $this->shipping_info['recipient_area'] ? 'selected' : false; ?> >
+							<?php echo $area['name']; ?>
+						</option>
 					<?php endforeach; ?>
 				</select>
 			</li>

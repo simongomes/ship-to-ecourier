@@ -43,12 +43,32 @@ if ( ! class_exists( 'Ajax' ) ) {
 			// Set eCourier base url.
 			$this->ecourier_base_url = 'live' === $this->settings['api_environment'] ? STE_API_BASE_URL_LIVE : STE_API_BASE_URL_STAGING;
 
+			add_action( 'wp_ajax_ste_get_area_by_district', array( $this, 'handle_ste_get_area_by_district' ) );
 			add_action( 'wp_ajax_ste_parcel_tracking_form', array( $this, 'handle_parcel_tracker_form_submission' ) );
 			add_action( 'wp_ajax_nopriv_ste_parcel_tracking_form', array( $this, 'handle_parcel_tracker_form_submission' ) );
 			add_action( 'wp_ajax_ste_booking_metabox_form', array( $this, 'handle_booking_metabox_form_submission' ) );
 			add_action( 'wp_ajax_ste_label_print', array( $this, 'handle_label_print' ) );
 			add_action( 'wp_ajax_ste_cancel_parcel_request', array( $this, 'handle_parcel_cancel_request' ) );
 
+		}
+
+		public function handle_ste_get_area_by_district() {
+			if ( ! isset( $_POST['_nonce'] ) || empty( $_POST['district'] ) ) {
+				wp_send_json_error( __( 'Something went wrong here!', 'ship-to-ecourier' ) );
+				wp_die();
+			}
+
+			// Block if _nonce field is not available and valid.
+			check_ajax_referer( 'ste-admin-nonce', '_nonce' );
+
+			$areas = ship_to_ecourier()->ecourier->get_area_by_district( sanitize_text_field( $_POST['district'] ) );
+
+			if ( is_wp_error( $areas ) ) {
+				wp_send_json_error( $areas->get_error_message() );
+				wp_die();
+			}
+
+			wp_send_json_success( $areas );
 		}
 
 		/**

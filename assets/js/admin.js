@@ -13,6 +13,60 @@
     let errorMessage = $( '.error-message' );
     let bookingForm = $( '#ste-booking-metabox-form' );
     let bookingMetaBoxMessage = $( '#ste-booking-metabox-message' );
+    let recipientCity = $( '#recipient_city' );
+    let recipientArea = $( '#recipient_area' );
+    let recipientThana = $( '#recipient_thana' );
+    let recipientZip = $( '#recipient_zip' );
+
+	/**
+	 * Setting area on change of city/district.
+	 */
+	recipientCity.on( 'change', function ( event ) {
+		let data = {
+			action: 'ste_get_area_by_district',
+			district: this.value,
+			_nonce: STE_ADMIN.nonce,
+		};
+
+		recipientArea.prop( 'disabled', true );
+
+		$.post( STE_ADMIN.ajaxurl, data, function ( response ) {
+			recipientArea.empty();
+			recipientThana.val( '' );
+			recipientZip.val( '' );
+
+			if ( ! response.success ) {
+				errorMessage.text( response.data );
+				parcelSubmitButton.prop( 'disabled', true );
+				return;
+			}
+
+			errorMessage.text( '' );
+
+			recipientArea.prop( 'disabled', false );
+
+			let areas = response.data;
+
+			areas.map( function ( area, index ) {
+				recipientArea.append( `<option data-thana="${area.thana}" data-post_code="${area.post_code}" value="${area.name.toLowerCase()}">${area.name}</option>` );
+
+				if ( index === 0 ) {
+					recipientThana.val( area.thana );
+					recipientZip.val( area.post_code );
+				}
+			} );
+		} );
+	} );
+
+	/**
+	 * Setting thana and post code on change of area.
+	 */
+	recipientArea.on( 'change', function ( event ) {
+		let optionSelected = $( 'option:selected', this );
+
+		recipientThana.val( optionSelected.data( 'thana' ) );
+		recipientZip.val( optionSelected.data( 'post_code' ) );
+	} );
 
     parcelSubmitButton.on("click", function (e) {
         e.preventDefault();
@@ -117,7 +171,6 @@
             }
 
             $.post(STE_ADMIN.ajaxurl, orderData, function (response) {
-                console.log( response );
                 if (!response.success) {
                     errorMessage.text(response.data.message);
                 } else {

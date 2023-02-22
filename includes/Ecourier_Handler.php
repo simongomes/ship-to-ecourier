@@ -86,8 +86,8 @@ class Ecourier_Handler {
 
 		$cities = json_decode( $body, true );
 
-		//keeping data in cache. Expire in 24 hours.
-		set_transient( self::CITY_LIST_CACHE_KEY, $cities, 86400 );
+		//keeping data in cache. Expire in 48 hours.
+		set_transient( self::CITY_LIST_CACHE_KEY, $cities, 172800 );
 
 		return $cities;
 	}
@@ -95,7 +95,7 @@ class Ecourier_Handler {
 	/**
 	 * Get area by district.
 	 *
-	 * @param string $district
+	 * @param string $district District name.
 	 *
 	 * @return array|\WP_Error
 	 */
@@ -112,14 +112,14 @@ class Ecourier_Handler {
 
 		$response = wp_remote_post(
 			$url,
-			array(
+			[
 				'headers' => $this->get_headers(),
-				'body'    => wp_json_encode( [ 'district' => $district ] ),
-			)
+				'body'    => wp_json_encode( [ 'district' => str_replace( "\'", "'", $district ) ] ),
+			]
 		);
 
 		if ( is_wp_error( $response ) ) {
-			return new \WP_Error( 'ste_get_area_error', __( 'Error in getting Area list', 'ship-to-ecourier' ), [ 'status' => 500 ] );
+			return new \WP_Error( 'ste_get_area_error', __( 'Error in getting Area list', 'ship-to-ecourier' ), [ 'status' => 500, 'data' => $response->get_error_data() ] );
 		}
 
 		$body = wp_remote_retrieve_body( $response );
@@ -139,8 +139,8 @@ class Ecourier_Handler {
 
 		$areas_data = $areas['data'];
 
-		//keeping data in cache. Expire in 24 hours.
-		set_transient( $cache_key, $areas_data, 86400 );
+		//keeping data in cache. Expire in 48 hours.
+		set_transient( $cache_key, $areas_data, 172800 );
 
 		return $areas_data;
 	}
