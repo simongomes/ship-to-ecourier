@@ -25,8 +25,6 @@ $recipient_post_code = '';
 			<li class="wide">
 				<label for="recipient_city"><?php esc_attr_e( 'Recipient District', 'ship-to-ecourier' ); ?></label>
 				<select name="recipient_city" id="recipient_city" class="wc-enhanced-select">
-					<?php $cities = ship_to_ecourier()->ecourier->get_city_list(); ?>
-
 					<?php
 					foreach ( $cities as $city ) :
 						$city_val = strtolower( $city['value'] );
@@ -40,8 +38,6 @@ $recipient_post_code = '';
 
 				<select name="recipient_area" id="recipient_area" class="wc-enhanced-select">
 					<?php
-					$areas = ship_to_ecourier()->ecourier->get_area_by_district( $this->shipping_info['recipient_city'] );
-
 					foreach ( $areas as $area ) :
 						$area_val = strtolower( $area['name'] );
 

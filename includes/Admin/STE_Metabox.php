@@ -63,6 +63,19 @@ if ( ! class_exists( 'STE_Metabox' ) ) {
 			if ( ! $order_shipped ) {
 				// Set all necessary Shipping Information.
 				$this->set_shipping_info( $theorder );
+
+				$cities = ship_to_ecourier()->ecourier->get_city_list();
+
+				if ( is_wp_error( $cities ) ) {
+					$cities = [];
+				}
+
+				$areas = ship_to_ecourier()->ecourier->get_area_by_district( $this->shipping_info['recipient_city'] );
+
+				if ( is_wp_error( $cities ) ) {
+					$areas = [];
+				}
+
 			} else {
 				$order_shipped->user = get_user_by( 'ID', $order_shipped->created_by )->display_name;
 			}
