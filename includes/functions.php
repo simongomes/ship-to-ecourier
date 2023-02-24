@@ -42,9 +42,17 @@ function ste_get_settings() {
 /**
  * Get eCourier packages for the connected account.
  *
- * @return array
+ * @return array|\WP_Error
  */
 function ste_get_ecourier_packages() {
+
+	$cache_key = 'ste_packages_list';
+
+	$packages = get_transient( $cache_key );
+
+	if ( $packages ) {
+		return $packages;
+	}
 
 	// Get eCourier API configs.
 	$settings = ste_get_settings();
@@ -65,7 +73,14 @@ function ste_get_ecourier_packages() {
 		)
 	);
 
+	if ( is_wp_error( $response ) ) {
+		return new WP_Error( 'ste_package_fetch_error', 'Error in getting packages', [ 'status' => 500 ] );
+	}
+
 	$packages = json_decode( $response['body'] );
+
+	//keeping data in cache. Expire in 48 hours.
+	set_transient( $cache_key, $packages, 172800 );
 
 	return $packages;
 }

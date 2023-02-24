@@ -90,6 +90,14 @@ if ( ! class_exists( 'Ajax' ) ) {
 				// Make request to eCourier API.
 				$response = $this->make_request( $ecourier_api_url, array( 'ecr' => $tracking_code ) );
 
+				if ( is_wp_error( $response ) ) {
+					wp_send_json_error(
+						array(
+							'message' => $response->get_error_data(),
+						)
+					);
+				}
+
 				// Send response to front-end.
 				wp_send_json_success(
 					array(
@@ -228,6 +236,14 @@ if ( ! class_exists( 'Ajax' ) ) {
 			// Send parcel label print request to eCourier.
 			$response = $this->make_request( $ecourier_api_url, $label_data );
 
+			if ( is_wp_error( $response ) ) {
+				wp_send_json_error(
+					array(
+						'message' => $response->get_error_data(),
+					)
+				);
+			}
+
 			$result = json_decode( $response['body'], true );
 
 			if ( ! $result['success'] ) {
@@ -273,6 +289,14 @@ if ( ! class_exists( 'Ajax' ) ) {
 
 			// Send parcel cancel request to eCourier.
 			$response = $this->make_request( $ecourier_api_url, $label_data );
+
+			if ( is_wp_error( $response ) ) {
+				wp_send_json_error(
+					array(
+						'message' => $response->get_error_data(),
+					)
+				);
+			}
 
 			$result = json_decode( $response['body'], true );
 
