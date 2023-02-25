@@ -112,6 +112,8 @@ if ( ! class_exists( 'STE_Metabox' ) ) {
 			foreach ( $order->get_items() as $item ) {
 				$this->shipping_info['comments'] .= $item->get_name() . ' x' . $item->get_quantity() . PHP_EOL;
 			}
+
+			$this->shipping_info = apply_filters( 'ste_set_shipping_info', $this->shipping_info, $order );
 		}
 
 	}

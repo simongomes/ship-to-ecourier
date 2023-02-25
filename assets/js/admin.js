@@ -167,6 +167,7 @@
 
             let orderData = {
                 tracking: cancleOrderButton.val(),
+	            original_order_number: $( '#original_order_number' ).val(),
                 action: 'ste_cancel_parcel_request',
                 _nonce: STE_ADMIN.nonce,
             }

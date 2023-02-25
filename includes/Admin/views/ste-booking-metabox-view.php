@@ -70,10 +70,10 @@ $recipient_post_code = '';
 			<li class="wide">
 				<label for="payment_method"><?php esc_attr_e( 'Payment Method', 'ship-to-ecourier' ); ?></label>
 				<select name="payment_method" id="payment_method" class="wc-enhanced-select">
-					<option value="CCRD"><?php esc_html_e( 'Card Payment', 'ship-to-ecourier' ); ?></option>
+					<option value="CCRD" <?php echo 'ccrd' === $this->shipping_info['payment_method'] ? 'selected' : false; ?>><?php esc_html_e( 'Card Payment', 'ship-to-ecourier' ); ?></option>
 					<option value="COD" <?php echo 'cod' === $this->shipping_info['payment_method'] ? 'selected' : false; ?>><?php esc_html_e( 'Cash On Delivery', 'ship-to-ecourier' ); ?></option>
-					<option value="MPAY"><?php esc_html_e( 'Mobile Payment', 'ship-to-ecourier' ); ?></option>
-					<option value="POS"><?php esc_html_e( 'POS', 'ship-to-ecourier' ); ?></option>
+					<option value="MPAY" <?php echo 'mpay' === $this->shipping_info['payment_method'] ? 'selected' : false; ?>><?php esc_html_e( 'Mobile Payment', 'ship-to-ecourier' ); ?></option>
+					<option value="POS" <?php echo 'pos' === $this->shipping_info['payment_method'] ? 'selected' : false; ?>><?php esc_html_e( 'POS', 'ship-to-ecourier' ); ?></option>
 				</select>
 			</li>
 			<li class="wide">
@@ -100,7 +100,6 @@ $recipient_post_code = '';
 		<input type="hidden" name="product_price" id="product_price" value="<?php echo esc_attr( $this->shipping_info['product_price'] ); ?>">
 		<input type="hidden" name="number_of_item" id="number_of_item" value="<?php echo esc_attr( $this->shipping_info['number_of_item'] ); ?>">
 		<input type="hidden" name="comments" id="comments" value="<?php echo esc_attr( $this->shipping_info['comments'] ); ?>">
-		<input type="hidden" name="original_order_number" id="original_order_number" value="<?php echo esc_attr( $post->ID ); ?>">
 	</div>
 	<?php } ?>
 	<div id="ste-booking-metabox-message" <?php if ( $order_shipped ) { ?>
@@ -135,4 +134,6 @@ $recipient_post_code = '';
 			<button id="ste-cancel-order" class="button button-cancel" value="<?php echo esc_html( $order_shipped->tracking_id ); ?>">Cancel Order</button>
 		</div>
 	<?php } ?>
+
+	<input type="hidden" name="original_order_number" id="original_order_number" value="<?php echo esc_attr( $post->ID ); ?>">
 </div>
