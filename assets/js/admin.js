@@ -87,6 +87,7 @@
             number_of_item: $( "#number_of_item", bookingFormWrap ).val(),
             comments: $( "#comments", bookingFormWrap ).val(),
             submit_ste_ecourier_parcel: $( "#submit_ste_ecourier_parcel", bookingFormWrap ).val(),
+	        original_order_number: $( "#original_order_number", bookingFormWrap ).val(),
             action: 'ste_booking_metabox_form',
             _nonce: STE_ADMIN.nonce,
         };

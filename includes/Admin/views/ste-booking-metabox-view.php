@@ -100,6 +100,7 @@ $recipient_post_code = '';
 		<input type="hidden" name="product_price" id="product_price" value="<?php echo esc_attr( $this->shipping_info['product_price'] ); ?>">
 		<input type="hidden" name="number_of_item" id="number_of_item" value="<?php echo esc_attr( $this->shipping_info['number_of_item'] ); ?>">
 		<input type="hidden" name="comments" id="comments" value="<?php echo esc_attr( $this->shipping_info['comments'] ); ?>">
+		<input type="hidden" name="original_order_number" id="original_order_number" value="<?php echo esc_attr( $post->ID ); ?>">
 	</div>
 	<?php } ?>
 	<div id="ste-booking-metabox-message" <?php if ( $order_shipped ) { ?>

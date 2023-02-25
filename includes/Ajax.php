@@ -156,9 +156,9 @@ if ( ! class_exists( 'Ajax' ) ) {
 			$parcel_data = array(
 				'recipient_name'    => sanitize_text_field( wp_unslash( $_POST['recipient_name'] ) ),
 				'recipient_mobile'  => sanitize_text_field( wp_unslash( $_POST['recipient_mobile'] ) ),
-				'recipient_city'    => sanitize_text_field( wp_unslash( $_POST['recipient_city'] ) ),
-				'recipient_area'    => sanitize_text_field( wp_unslash( $_POST['recipient_area'] ) ),
-				'recipient_thana'   => sanitize_text_field( wp_unslash( $_POST['recipient_thana'] ) ),
+				'recipient_city'    => ucwords( sanitize_text_field( wp_unslash( $_POST['recipient_city'] ) ) ),
+				'recipient_area'    => ucwords( sanitize_text_field( wp_unslash( $_POST['recipient_area'] ) ) ),
+				'recipient_thana'   => ucwords( sanitize_text_field( wp_unslash( $_POST['recipient_thana'] ) ) ),
 				'recipient_zip'     => sanitize_text_field( wp_unslash( $_POST['recipient_zip'] ) ),
 				'recipient_address' => sanitize_text_field( wp_unslash( $_POST['recipient_address'] ) ),
 				'payment_method'    => sanitize_text_field( wp_unslash( $_POST['payment_method'] ) ),
@@ -173,6 +173,14 @@ if ( ! class_exists( 'Ajax' ) ) {
 
 			// Send parcel booking request to eCourier.
 			$response = $this->make_request( $ecourier_api_url, $parcel_data );
+
+			if ( is_wp_error( $response ) ) {
+				wp_send_json_error(
+					array(
+						'message' => $response->get_error_data(),
+					)
+				);
+			}
 
 			$result = json_decode( $response['body'], true );
 
@@ -194,8 +202,14 @@ if ( ! class_exists( 'Ajax' ) ) {
 					);
 				}
 
-				// Get the order to update the order status.
-				$order = new \WC_Order( $parcel_data['product_id'] );
+				/**
+				 * Get the order to update the order status.
+				 *
+				 * using original order number here because sometimes the order
+				 * number might be modified through `woocommerce_order_number` filter
+				 * by third party plugin.
+				 */
+				$order = new \WC_Order( sanitize_text_field( wp_unslash( $_POST['original_order_number'] ) ) );
 				$order->update_status( 'shipped' );
 			}
 
