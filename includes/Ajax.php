@@ -43,12 +43,32 @@ if ( ! class_exists( 'Ajax' ) ) {
 			// Set eCourier base url.
 			$this->ecourier_base_url = 'live' === $this->settings['api_environment'] ? STE_API_BASE_URL_LIVE : STE_API_BASE_URL_STAGING;
 
+			add_action( 'wp_ajax_ste_get_area_by_district', array( $this, 'handle_ste_get_area_by_district' ) );
 			add_action( 'wp_ajax_ste_parcel_tracking_form', array( $this, 'handle_parcel_tracker_form_submission' ) );
 			add_action( 'wp_ajax_nopriv_ste_parcel_tracking_form', array( $this, 'handle_parcel_tracker_form_submission' ) );
 			add_action( 'wp_ajax_ste_booking_metabox_form', array( $this, 'handle_booking_metabox_form_submission' ) );
 			add_action( 'wp_ajax_ste_label_print', array( $this, 'handle_label_print' ) );
 			add_action( 'wp_ajax_ste_cancel_parcel_request', array( $this, 'handle_parcel_cancel_request' ) );
 
+		}
+
+		public function handle_ste_get_area_by_district() {
+			if ( ! isset( $_POST['_nonce'] ) || empty( $_POST['district'] ) ) {
+				wp_send_json_error( __( 'Something went wrong here!', 'ship-to-ecourier' ) );
+				wp_die();
+			}
+
+			// Block if _nonce field is not available and valid.
+			check_ajax_referer( 'ste-admin-nonce', '_nonce' );
+
+			$areas = ship_to_ecourier()->ecourier->get_area_by_district( sanitize_text_field( $_POST['district'] ) );
+
+			if ( is_wp_error( $areas ) ) {
+				wp_send_json_error( $areas->get_error_message() );
+				wp_die();
+			}
+
+			wp_send_json_success( $areas );
 		}
 
 		/**
@@ -69,6 +89,14 @@ if ( ! class_exists( 'Ajax' ) ) {
 
 				// Make request to eCourier API.
 				$response = $this->make_request( $ecourier_api_url, array( 'ecr' => $tracking_code ) );
+
+				if ( is_wp_error( $response ) ) {
+					wp_send_json_error(
+						array(
+							'message' => $response->get_error_data(),
+						)
+					);
+				}
 
 				// Send response to front-end.
 				wp_send_json_success(
@@ -122,15 +150,16 @@ if ( ! class_exists( 'Ajax' ) ) {
 						'message' => __( 'All fields are required!', 'ship-to-ecourier' ),
 					)
 				);
+				return;
 			}
 
 			// Generate parcel booking data to send to eCourier.
 			$parcel_data = array(
 				'recipient_name'    => sanitize_text_field( wp_unslash( $_POST['recipient_name'] ) ),
 				'recipient_mobile'  => sanitize_text_field( wp_unslash( $_POST['recipient_mobile'] ) ),
-				'recipient_city'    => sanitize_text_field( wp_unslash( $_POST['recipient_city'] ) ),
-				'recipient_area'    => sanitize_text_field( wp_unslash( $_POST['recipient_area'] ) ),
-				'recipient_thana'   => sanitize_text_field( wp_unslash( $_POST['recipient_thana'] ) ),
+				'recipient_city'    => ucwords( sanitize_text_field( wp_unslash( $_POST['recipient_city'] ) ) ),
+				'recipient_area'    => ucwords( sanitize_text_field( wp_unslash( $_POST['recipient_area'] ) ) ),
+				'recipient_thana'   => ucwords( sanitize_text_field( wp_unslash( $_POST['recipient_thana'] ) ) ),
 				'recipient_zip'     => sanitize_text_field( wp_unslash( $_POST['recipient_zip'] ) ),
 				'recipient_address' => sanitize_text_field( wp_unslash( $_POST['recipient_address'] ) ),
 				'payment_method'    => sanitize_text_field( wp_unslash( $_POST['payment_method'] ) ),
@@ -145,6 +174,15 @@ if ( ! class_exists( 'Ajax' ) ) {
 
 			// Send parcel booking request to eCourier.
 			$response = $this->make_request( $ecourier_api_url, $parcel_data );
+
+			if ( is_wp_error( $response ) ) {
+				wp_send_json_error(
+					array(
+						'message' => $response->get_error_data(),
+					)
+				);
+				return;
+			}
 
 			$result = json_decode( $response['body'], true );
 
@@ -164,10 +202,29 @@ if ( ! class_exists( 'Ajax' ) ) {
 							'message' => $insert->get_error_message(),
 						)
 					);
+					return;
 				}
 
-				// Get the order to update the order status.
-				$order = new \WC_Order( $parcel_data['product_id'] );
+				$user = get_user_by( 'id', get_current_user_id() );
+
+				$order_shipped_note = '';
+
+				if ( $user ) {
+					$order_shipped_note = sprintf(
+						__( 'Order shipped to Ecourier by %s', 'ship-to-ecourier' ),
+						$user->display_name
+					);
+				}
+
+				/**
+				 * Get the order to update the order status.
+				 *
+				 * using original order number here because sometimes the order
+				 * number might be modified through `woocommerce_order_number` filter
+				 * by third party plugin.
+				 */
+				$order = new \WC_Order( sanitize_text_field( wp_unslash( $_POST['original_order_number'] ) ) );
+				! empty( $order_shipped_note ) ? $order->add_order_note( $order_shipped_note ) : null;
 				$order->update_status( 'shipped' );
 			}
 
@@ -208,6 +265,14 @@ if ( ! class_exists( 'Ajax' ) ) {
 			// Send parcel label print request to eCourier.
 			$response = $this->make_request( $ecourier_api_url, $label_data );
 
+			if ( is_wp_error( $response ) ) {
+				wp_send_json_error(
+					array(
+						'message' => $response->get_error_data(),
+					)
+				);
+			}
+
 			$result = json_decode( $response['body'], true );
 
 			if ( ! $result['success'] ) {
@@ -243,16 +308,26 @@ if ( ! class_exists( 'Ajax' ) ) {
 			// Block if _nonce field is not available and valid.
 			check_ajax_referer( 'ste-admin-nonce', '_nonce' );
 
+			$user = get_user_by( 'id', get_current_user_id() );
+
 			// Generate label print data to send to eCourier.
 			$label_data = array(
 				'tracking' => sanitize_text_field( wp_unslash( $_POST['tracking'] ) ),
-				'comment'  => __( 'Please cancle the parcel.', 'ship-to-ecourier' ),
+				'comment'  => __( 'Please cancel the parcel. Requested by ' . $user->display_name , 'ship-to-ecourier' ),
 			);
 
 			$ecourier_api_url = $this->ecourier_base_url . '/cancel-order';
 
 			// Send parcel cancel request to eCourier.
 			$response = $this->make_request( $ecourier_api_url, $label_data );
+
+			if ( is_wp_error( $response ) ) {
+				wp_send_json_error(
+					array(
+						'message' => $response->get_error_data(),
+					)
+				);
+			}
 
 			$result = json_decode( $response['body'], true );
 
@@ -273,6 +348,23 @@ if ( ! class_exists( 'Ajax' ) ) {
 						)
 					);
 				}
+			}
+
+			$order = wc_get_order( wp_unslash( $_POST['original_order_number'] ) );
+
+			if ( $order instanceof \WC_Order) {
+				$order_cancel_note = '';
+
+				if ( $user ) {
+					$order_cancel_note = sprintf(
+						__( 'Shipping cancelled at Ecourier by %s', 'ship-to-ecourier' ),
+						$user->display_name
+					);
+				}
+
+				! empty( $order_cancel_note ) ? $order->add_order_note( $order_cancel_note ) : null;
+
+				$order->update_status( 'processing' );
 			}
 
 			wp_send_json_success(

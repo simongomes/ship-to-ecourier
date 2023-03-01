@@ -63,6 +63,19 @@ if ( ! class_exists( 'STE_Metabox' ) ) {
 			if ( ! $order_shipped ) {
 				// Set all necessary Shipping Information.
 				$this->set_shipping_info( $theorder );
+
+				$cities = ship_to_ecourier()->ecourier->get_city_list();
+
+				if ( is_wp_error( $cities ) ) {
+					$cities = [];
+				}
+
+				$areas = ship_to_ecourier()->ecourier->get_area_by_district( $this->shipping_info['recipient_city'] );
+
+				if ( is_wp_error( $cities ) ) {
+					$areas = [];
+				}
+
 			} else {
 				$order_shipped->user = get_user_by( 'ID', $order_shipped->created_by )->display_name;
 			}
@@ -84,8 +97,8 @@ if ( ! class_exists( 'STE_Metabox' ) ) {
 		public function set_shipping_info( \WC_Order $order ) {
 			$this->shipping_info['recipient_name']    = '' !== trim( $order->get_formatted_shipping_full_name() ) ? $order->get_formatted_shipping_full_name() : $order->get_formatted_billing_full_name();
 			$this->shipping_info['recipient_mobile']  = $order->get_billing_phone();
-			$this->shipping_info['recipient_city']    = '' !== trim( $order->get_shipping_city() ) ? $order->get_shipping_city() : $order->get_billing_city();
-			$this->shipping_info['recipient_area']    = '';
+			$this->shipping_info['recipient_city']    = '' !== trim( $order->get_shipping_state() ) ? strtolower( $order->get_shipping_state() ) : strtolower( $order->get_billing_state() );
+			$this->shipping_info['recipient_area']    = '' !== trim( $order->get_shipping_city() ) ? strtolower( $order->get_shipping_city() ) : strtolower( $order->get_billing_city() );
 			$this->shipping_info['recipient_thana']   = '';
 			$this->shipping_info['recipient_zip']     = '' !== trim( $order->get_shipping_postcode() ) ? $order->get_shipping_postcode() : $order->get_billing_postcode();
 			$this->shipping_info['recipient_address'] = '' !== trim( $order->get_shipping_address_1() ) ? $order->get_shipping_address_1() . '' . $order->get_shipping_address_2() : $order->get_billing_address_1() . ' ' . $order->get_billing_address_2();
@@ -99,6 +112,8 @@ if ( ! class_exists( 'STE_Metabox' ) ) {
 			foreach ( $order->get_items() as $item ) {
 				$this->shipping_info['comments'] .= $item->get_name() . ' x' . $item->get_quantity() . PHP_EOL;
 			}
+
+			$this->shipping_info = apply_filters( 'ste_set_shipping_info', $this->shipping_info, $order );
 		}
 
 	}
