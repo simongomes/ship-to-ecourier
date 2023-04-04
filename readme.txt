@@ -3,9 +3,9 @@ Contributors: simongomes02
 Donate link: https://simongomes.dev/
 Tags: ecourier, ecourier-parcel, ship-to-ecourier, ecourier-booking, ecourier-parcel-booking, ecourier-booking-automation, ecourier-parcel-tracker
 Requires at least: 4.0
-Tested up to: 5.7.1
+Tested up to: 6.2.0
 Requires PHP: 5.6
-Stable tag: 1.1.0
+Stable tag: 1.1.1
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -77,6 +77,14 @@ Integrating Appsero SDK **DOES NOT IMMEDIATELY** start gathering data, **without
 Learn more about how [Appsero collects and uses this data](https://appsero.com/privacy-policy/).
 
 == Changelog ==
+
+= 1.1.1 =
+
+* Fetch City and area from Ecourier API and display in Dropdown
+* Add caching for storing API data to avoid redundancy
+* Error handling for HTTP requests.
+* Add order note when shipped and cancel
+* added a filter to allow modification in shipping info by 3rd party plugin
 
 = 1.1.0 =
 * Added: Label printing feature
